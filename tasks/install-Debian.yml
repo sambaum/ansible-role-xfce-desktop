@@ -1,0 +1,22 @@
+- name: Configure APT
+  ansible.builtin.include_role:
+    name: debops.debops.apt
+
+- name: Install XFCE Packages
+  ansible.builtin.include_role:
+    name: debops.debops.apt_install
+
+- name: Install nodejs Packages
+  ansible.builtin.include_role:
+    name: debops.debops.nodejs
+
+# TODO: remove package_list_host_snap from host_vars
+- name: Install Snap packages
+  community.general.snap:
+    name: "{{ item.name }}"
+    classic: "{{ item.classic | default(false) }}"
+  loop: "{{ xfce_desktop_package_list_snap }}"
+
+- name: Configure Systemd
+  ansible.builtin.include_role:
+    name: debops.debops.systemd

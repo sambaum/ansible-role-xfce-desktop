@@ -1,0 +1,175 @@
+#!/bin/sh
+# Example for listing properties verbosely:
+# $ xfconf-query -c xfce4-panel -l -v
+# $ xfconf-query -c xfwm4 -lv
+
+
+# Read with: xfconf-query -c xfwm4 -p /general/use_compositing
+# Default: xfconf-query -c xfwm4 -p /general/use_compositing -s true
+xfconf-query -c xfwm4 -p /general/use_compositing -t bool -s false --create
+
+# Read with: xfconf-query -c xfce4-keyboard-shortcuts -l -v | grep switch_window_key
+# Default: xfconf-query -c xfce4-keyboard-shortcuts -p "/xfwm4/default/<Super>Tab" -s switch_window_key
+xfconf-query -c xfce4-keyboard-shortcuts -p "/xfwm4/default/<Super>Tab" -s false --create
+
+# Disable Screensave/lock
+xfconf-query -c xfce4-screensaver -p /saver/enabled -s false --create
+xfconf-query -c xfce4-screensaver -p /lock/enabled -s false --create
+
+########################## PANEL 1 ##########################
+
+# to have only one panel and remove the second panel
+xfconf-query -c xfce4-panel -p /panels -t int -s 1 -a
+
+xfconf-query -c xfce4-panel -p /panels/panel-1/position -t string -s "p=8;x=840;y=836" --create
+xfconf-query -c xfce4-panel -p /panels/panel-1/size -t int -s 33 --create
+xfconf-query -c xfce4-panel -p /panels/panel-1/background-alpha -t int -s 50 --create # needs compositing enabled
+xfconf-query -c xfce4-panel -p /panels/panel-1/background-style -t int -s 1 --create # needs compositing enabled
+xfconf-query -c xfce4-panel -p /panels/panel-1/background-color --create \
+	-t int -s 6425 \
+	-t int -s 6425 \
+	-t int -s 6425 \
+	-t int -s 65535
+
+# Create all Panel Items
+{% for item in xfce_panel1_items %}
+
+xfconf-query -c xfce4-panel -p /plugins/plugin-{{ item.id }} -s {{ item.name }} -n -t {{ item.type }} --create
+
+{% if item.name == 'separator' %}
+xfconf-query -c xfce4-panel -p /plugins/plugin-{{ item.id }}/expand -s {{ item.expand }} -n -t bool --create
+xfconf-query -c xfce4-panel -p /plugins/plugin-{{ item.id }}/style -s {{ item.style }} -n -t int --create
+{% endif %}
+
+{% if item.name == 'tasklist' %}
+xfconf-query -c xfce4-panel -p /plugins/plugin-{{ item.id }} -Rr
+xfconf-query -c xfce4-panel -p /plugins/plugin-{{ item.id }} -t string -s tasklist --create
+xfconf-query -c xfce4-panel -p /plugins/plugin-{{ item.id }}/flat-buttons -t bool -s false --create
+xfconf-query -c xfce4-panel -p /plugins/plugin-{{ item.id }}/show-labels -t bool -s true --create
+xfconf-query -c xfce4-panel -p /plugins/plugin-{{ item.id }}/show-handle -t bool -s false --create
+xfconf-query -c xfce4-panel -p /plugins/plugin-101/sort-order -t int -s 0 --create # 0=sort-order timestamp
+{% endif %}
+
+{% if item.name == 'launcher' %}
+{% for menu_item in item.menu_items %}
+xfconf-query -c xfce4-panel -p /plugins/plugin-{{ item.id }}/items -t {{ menu_item.type }} -s "{{ menu_item.name }}" -a --create
+{% endfor %}
+{% endif %}
+
+{% if item.name == 'actions' %}
+xfconf-query -c xfce4-panel -p /plugins/plugin-{{ item.id }}/appearance -n -t int -s 0
+xfconf-query -c xfce4-panel -p /plugins/plugin-{{ item.id }}/items -n \
+	-t string -s "-lock-screen" \
+	-t string -s "-switch-user" \
+	-t string -s "-separator" \
+	-t string -s "-suspend" \
+	-t string -s "-hibernate" \
+	-t string -s "-separator" \
+	-t string -s "-shutdown" \
+	-t string -s "-restart" \
+	-t string -s "-separator" \
+	-t string -s "-logout" \
+	-t string -s "+logout-dialog"
+{% endif %}
+
+{% if item.name == 'systray' %}
+xfconf-query -c xfce4-panel -p /plugins/plugin-{{ item.id }}/show-frame -s false -t bool --create
+{% endif %}
+
+{% if item.name == 'systemload' %}
+xfconf-query -c xfce4-panel -p /plugins/plugin-{{ item.id }}/cpu/label -s "" -t string --create
+xfconf-query -c xfce4-panel -p /plugins/plugin-{{ item.id }}/cpu/color -s 0.207843 -s 0.517647 -s 0.894118 -s 1.000000 --create
+xfconf-query -c xfce4-panel -p /plugins/plugin-{{ item.id }}/memory/label -s "" -t string --create
+xfconf-query -c xfce4-panel -p /plugins/plugin-{{ item.id }}/memory/color -s 0.341176 -s 0.890196 -s 0.537255 -s 1.000000 --create
+xfconf-query -c xfce4-panel -p /plugins/plugin-{{ item.id }}/network/label -s "" -t string --create
+xfconf-query -c xfce4-panel -p /plugins/plugin-{{ item.id }}/swap/label -s "" -t string --create
+xfconf-query -c xfce4-panel -p /plugins/plugin-{{ item.id }}/swap/color -s 0.976471 -s 0.941176 -s 0.419608 -s 1.000000 --create
+xfconf-query -c xfce4-panel -p /plugins/plugin-{{ item.id }}/network/enabled -s false -t bool --create
+xfconf-query -c xfce4-panel -p /plugins/plugin-{{ item.id }}/uptime/enabled -s false -t bool --create
+{% endif %}
+
+{% endfor %}
+
+# Add the panel items to the panel
+xfconf-query -c xfce4-panel -p /panels/panel-1/plugin-ids \
+{% for item in xfce_panel1_items %}
+{% if item.id == 200 %}
+
+{% endif %}
+	-t int -s {{ item.id }} \
+{% endfor %}
+
+# Icon Size in Panel (0 = automatic size)
+xfconf-query -c xfce4-panel -p /panels/panel-1/icon-size -s 0 -n -t int --create
+
+### XFCE ### Desktop
+
+# Set Wallpaper on all desktops
+{% for monitor in xfce_monitors %}
+xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor{{ monitor }}/workspace0/last-image -t string -s /usr/share/backgrounds/xfce/{{ xfce_background }} --create
+xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor{{ monitor }}/workspace0/image-style -t int -s 3 --create
+xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorrdp{{ monitor }}/workspace0/last-image -t string -s /usr/share/backgrounds/xfce/{{ xfce_background }} --create
+xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorrdp{{ monitor }}/workspace0/image-style -t int -s 3 --create
+{% endfor %}
+
+# Dont show icons on desktop
+xfconf-query -c xfce4-desktop -p /desktop-icons/file-icons -Rr
+xfconf-query -c xfce4-desktop -p /desktop-icons/file-icons/show-filesystem -t bool -s false --create
+xfconf-query -c xfce4-desktop -p /desktop-icons/file-icons/show-home -t bool -s false --create
+xfconf-query -c xfce4-desktop -p /desktop-icons/file-icons/show-removable -t bool -s false --create
+xfconf-query -c xfce4-desktop -p /desktop-icons/file-icons/show-trash -t bool -s false --create
+
+### XFCE ### Keyboard
+xfconf-query -c keyboard-layout -p /Default/XkbDisable -t bool -s false --create
+xfconf-query -c keyboard-layout -p /Default/XkbLayout -t string -s ch --create
+xfconf-query -c keyboard-layout -p /Default/XkbModel -t string -s pc105 --create
+
+### xfce4-keyboard-shortcuts
+xfconf-query -c xfce4-keyboard-shortcuts -p "/xfwm4/default/<Primary>F1" -s "" # disable so byobu works
+xfconf-query -c xfce4-keyboard-shortcuts -p "/xfwm4/default/<Primary>F2" -s "" # disable so byobu works
+xfconf-query -c xfce4-keyboard-shortcuts -p "/xfwm4/default/<Primary>F3" -s "" # disable so byobu works
+xfconf-query -c xfce4-keyboard-shortcuts -p "/xfwm4/default/<Primary>F4" -s "" # disable so byobu works
+xfconf-query -c xfce4-keyboard-shortcuts -p "/xfwm4/default/<Primary>F5" -s "" # disable so byobu works
+xfconf-query -c xfce4-keyboard-shortcuts -p "/xfwm4/default/<Primary>F6" -s "" # disable so byobu works
+xfconf-query -c xfce4-keyboard-shortcuts -p "/xfwm4/default/<Primary>F7" -s "" # disable so byobu works
+xfconf-query -c xfce4-keyboard-shortcuts -p "/xfwm4/default/<Primary>F8" -s "" # disable so byobu works
+
+
+### Themes ### Cursor
+xfconf-query -c xsettings -p /Gtk/CursorThemeName -t string -s OpenZone_Black --create
+
+### Themes ### Icons
+xfconf-query -c xsettings -p /Net/IconThemeName -t string -s Paper --create
+
+### Workspace
+xfconf-query -c xfwm4 -p /general/workspace_count -t int -s 4 --create
+
+### Session
+xfconf-query -c xfce4-session -p /general/SaveOnExit -t bool -s false --create
+
+### thinclient_drives
+# sudo /opt/umount_thinclient_drives_{{ item.name }}.sh
+
+### Clipman
+xfconf-query -c xfce4-panel -p /plugins/clipman/settings/save-on-quit -t bool -s false --create
+
+### Thunar
+xfconf-query -c thunar -p / -rR
+xfconf-query -c thunar -p /last-show-hidden -t bool -s false --create
+xfconf-query -c thunar -p /last-view -t string -s ThunarDetailsView --create
+xfconf-query -c thunar -p /last-location-bar -t string -s ThunarLocationEntry --create # ThunarLocationEntry or ThunarLocationButtons
+xfconf-query -c thunar -p /misc-date-style -t string -s THUNAR_DATE_STYLE_SHORT --create
+xfconf-query -c thunar -p /last-window-height -t int -s 700 --create
+xfconf-query -c thunar -p /last-window-maximized -t bool -s false --create
+xfconf-query -c thunar -p /last-window-width  -t int -s 1000 --create
+xfconf-query -c thunar -p /default-view -t string -s ThunarDetailsView --create
+xfconf-query -c thunar -p /last-details-view-visible-columns -t string -s THUNAR_COLUMN_DATE_MODIFIED,THUNAR_COLUMN_MIME_TYPE,THUNAR_COLUMN_NAME,THUNAR_COLUMN_SIZE,THUNAR_COLUMN_TYPE --create
+xfconf-query -c thunar -p /last-details-view-column-widths -t string -s 0,186,50,240,474,50,50,60,60 --create
+
+# Numlock
+xfconf-query -c keyboards -p /Default/RestoreNumlock -n -t bool -s false
+
+. /etc/xdg/xfce4/xinitrc
+
+# No power management for display
+xfconf-query -c xfce4-power-manager -p /xfce4-power-manager/dpms-enabled -s false --create

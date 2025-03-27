@@ -1,0 +1,34 @@
+<?xml encoding="UTF-8" version="1.0"?>
+<actions>
+{% for action in thunar_custom_actions %}
+<action>
+	<icon>{{ action.icon }}</icon>
+	<name>{{ action.name }}</name>
+	<unique-id>{{ action.unique_id }}</unique-id>
+	<command>{{ action.command }}</command>
+	<description>{{ action.description }}</description>
+	<patterns>{{ action.patterns }}</patterns>
+{% if action.startup_notify %}
+	<startup-notify/>
+{% endif %}
+{% if action.directories %}
+	<directories/>
+{% endif %}
+{% if action.audio_files %}
+	<audio-files/>
+{% endif %}
+{% if action.image_files %}
+	<image-files/>
+{% endif %}
+{% if action.other_files %}
+	<other-files/>
+{% endif %}
+{% if action.text_files %}
+	<text-files/>
+{% endif %}
+{% if action.video_files %}
+	<video-files/>
+{% endif %}
+</action>
+{% endfor %}
+</actions>

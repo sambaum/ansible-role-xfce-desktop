@@ -1,0 +1,7 @@
+{
+    "ExtensionInstallForcelist": [
+{% for item in xfce_desktop_chromium_ExtensionInstallForcelist %}
+	    "{{ item.id }}"{{ "," if not loop.last else "" }}
+{% endfor %}
+    ]
+}

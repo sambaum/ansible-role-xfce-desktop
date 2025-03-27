@@ -1,2 +1,285 @@
 ---
-# defaults file for ansible-role-xfce-desktop
+
+### General
+
+desktop_users:
+- name: sam
+  home: /home/sam
+- name: root
+  home: /root
+
+xfce_font_name: DejaVuSansMono Nerd Font Book 10
+
+xfce_desktop_files:
+- id: 203
+  name: terminal_emulator.desktop
+  icon: zsh.png
+- id: 205
+  name: file_manager.desktop
+- id: 208
+  name: brave-browser.desktop
+- id: 209
+  name: vscode.desktop
+
+xfce_panel1_items:
+- id: 100
+  name: whiskermenu
+  type: string
+- id: 101
+  name: tasklist
+  type: string
+- id: 102
+  name: separator
+  type: string
+  style: 0
+  expand: "true"
+- id: 200
+  name: launcher
+  type: string
+  menu_items:
+  - name: sublimetext3.desktop
+    type: string
+- id: 208
+  name: launcher
+  type: string
+  menu_items:
+  - name: brave-browser.desktop
+    type: string
+- id: 209
+  name: launcher
+  type: string
+  menu_items:
+  - name: vscode.desktop
+    type: string
+- id: 203
+  name: launcher
+  type: string
+  menu_items:
+  - name: terminal_emulator.desktop
+    type: string
+- id: 205
+  name: launcher
+  type: string
+  menu_items:
+  - name: file_manager.desktop
+    type: string
+- id: 206
+  name: separator
+  type: string
+  style: 0
+  expand: "false"
+- id: 207
+  name: showdesktop
+  type: string
+- id: 300
+  name: separator
+  type: string
+  style: 0
+  expand: "false"
+- id: 301
+  name: genmon
+  type: string
+- id: 302
+  name: separator
+  type: string
+  style: 0
+  expand: "false"
+- id: 303
+  name: pager
+  type: string
+- id: 304
+  name: separator
+  type: string
+  style: 0
+  expand: "false"
+- id: 305
+  name: actions
+  type: string
+- id: 306
+  name: separator
+  type: string
+  style: 0
+  expand: "false"
+- id: 307
+  name: systray
+  type: string
+- id: 308
+  name: separator
+  type: string
+  style: 0
+  expand: "false"
+- id: 309
+  name: systemload
+  type: string
+- id: 312
+  name: netload
+  type: string
+
+xfce_monitors:
+- 0
+- 1
+- 2
+
+thunar_custom_actions:
+- icon: utilities-terminal
+  name: Open Terminal Here
+  unique_id: 1530613397035048-11
+  command: exo-open --working-directory %f --launch TerminalEmulator
+  description: Open Terminal for directories
+  patterns: "*"
+  startup_notify: yes
+  directories: yes
+  audio_files: no
+  image_files: no
+  other_files: no
+  text_files: no
+  video_files: no
+- icon: utilities-terminal
+  name: Open Terminal Here
+  unique_id: 1530613397035049-11
+  command: exo-open --working-directory %d --launch TerminalEmulator
+  description: Open Terminal for files
+  patterns: "*"
+  startup_notify: yes
+  directories: no
+  audio_files: yes
+  image_files: yes
+  other_files: yes
+  text_files: yes
+  video_files: yes
+- icon: folder-red
+  name: Open A Root Thunar Here
+  unique_id: 1524057598220529-4
+  command: gksudo thunar %d
+  description: Open Root Thunar for files
+  patterns: "*"
+  startup_notify: yes
+  directories: no
+  audio_files: yes
+  image_files: yes
+  other_files: yes
+  text_files: yes
+  video_files: yes
+- icon: application-x-tar
+  name: Add to *.tar
+  unique_id: 1530618852531265-20
+  command: tar -cf %f.tar -C %d %N
+  description:
+  patterns: "*"
+  startup_notify: yes
+  directories: yes
+  audio_files: yes
+  image_files: yes
+  other_files: yes
+  text_files: yes
+  video_files: yes
+- icon: application-x-gzip-compressed-tar
+  name: Add to *.tgz
+  unique_id: 1530611592104476-9
+  command: tar -czf %f.tgz -C %d %N
+  description:
+  patterns: "*"
+  startup_notify: yes
+  directories: yes
+  audio_files: yes
+  image_files: yes
+  other_files: yes
+  text_files: yes
+  video_files: yes
+- icon: 7zip
+  name: Add or Update to *.7z
+  unique_id: 1530618442640258-15
+  command: 7z a %n.7z %F
+  description:
+  patterns: "*"
+  startup_notify: yes
+  directories: yes
+  audio_files: yes
+  image_files: yes
+  other_files: yes
+  text_files: yes
+  video_files: yes
+- icon: accessories-clipboard
+  name: Copy Pathname
+  unique_id: 1530618442640259-15
+  command: echo -n %f | xclip -selection clipboard
+  description: Copy full path name to clipboard
+  patterns: "*"
+  startup_notify: no
+  directories: yes
+  audio_files: yes
+  image_files: yes
+  other_files: yes
+  text_files: yes
+  video_files: yes
+- icon: accessories-character-map-symbolic
+  name: Slugify Filename
+  unique_id: 1530618442640270-14
+  command: for file in %N; do mv "$file" "$(echo "$file" | tr -s ' ' | tr ' A-Z' '-a-z' | tr -s '-' | tr -c '[:alnum:][:cntrl:].' '-')"; done
+  description: Rename the currently selected files, making the filenames lower-case and replacing spaces with dashes.
+  patterns: "*"
+  startup_notify: no
+  directories: yes
+  audio_files: yes
+  image_files: yes
+  other_files: yes
+  text_files: yes
+  video_files: yes
+- icon: application-x-cd-image
+  name: Open with ISO Master
+  unique_id: 1530618442640280-15
+  command: isomaster %f
+  description: Open with ISO Master
+  patterns: "*.iso"
+  startup_notify: yes
+  directories: no
+  audio_files: no
+  image_files: no
+  other_files: yes
+  text_files: no
+  video_files: no
+- icon: gitkraken
+  name: Open with GitKraken
+  unique_id: 1530617442640280-15
+  command: gitkraken -p %f
+  description: Open with GitKraken
+  patterns: "*"
+  startup_notify: no
+  directories: yes
+  audio_files: yes
+  image_files: yes
+  other_files: yes
+  text_files: yes
+  video_files: yes
+
+### Browser ### Extensions
+
+xfce_desktop_chromium_ExtensionInstallForcelist_all:
+- name: Raindrop.io
+  id: ldgfbffkinooeloadekpmfoklnobpien
+- name: Bitwarden
+  id: nngceckbapebfimnlniiiahkandclblb
+- name: uMatrix
+  id: ogfcmafjalglgifnmanfmnieipoejdcf
+- name: Floccus
+  id: fnaicdffflnofjppbagibeoednhnbjhg
+- name: Blank New Tab Page
+  id: jonikckfpolfcdcgdficelkfffkloemh
+- name: I don't care about cookies
+  id: fihnjjcciajhdojfnbdddfaoknhalnja
+xfce_desktop_chromium_ExtensionInstallForcelist_group: []
+xfce_desktop_chromium_ExtensionInstallForcelist_host: []
+
+### Browser ### Policies
+
+desktop_ChromeEnterprisePolicies:
+- name: PasswordManagerEnabled
+  value: "false"
+- name: AutofillAddressEnabled
+  value: "false"
+- name: AutofillCreditCardEnabled
+  value: "false"
+- name: PromptForDownloadLocation
+  value: "true"
+- name: BookmarkBarEnabled
+  value: "true"

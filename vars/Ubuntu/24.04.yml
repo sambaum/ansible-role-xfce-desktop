@@ -1,0 +1,76 @@
+apt__repositories:
+- name: brave
+  filename: brave.sources
+  uris: https://brave-browser-apt-release.s3.brave.com/
+  signed_by: https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
+  suites: 'stable'
+  components: "main"
+
+xfce_desktop_package_list_xfce:
+- xfce4
+- xfce4-terminal
+# - xfce4-goodies
+- xserver-xorg-core
+- xrdp
+- gnome-keyring
+- paper-icon-theme
+- xclip
+# xfce4-goodies BEGIN
+- mousepad
+- ristretto
+- thunar-archive-plugin
+- thunar-media-tags-plugin
+- xfburn
+# - xfce4-battery-plugin
+# - xfce4-clipman-plugin
+- xfce4-cpufreq-plugin
+- xfce4-cpugraph-plugin
+- xfce4-dict
+- xfce4-diskperf-plugin
+- xfce4-fsguard-plugin
+- xfce4-genmon-plugin
+# - xfce4-mailwatch-plugin
+- xfce4-netload-plugin
+- xfce4-notifyd
+- xfce4-places-plugin
+- xfce4-screenshooter
+- xfce4-sensors-plugin
+- xfce4-smartbookmark-plugin
+- xfce4-systemload-plugin
+- xfce4-taskmanager
+- xfce4-terminal
+- xfce4-timer-plugin
+- xfce4-verve-plugin
+- xfce4-wavelan-plugin
+- xfce4-weather-plugin
+- xfce4-whiskermenu-plugin
+- xfce4-xkb-plugin
+# xfce4-goodies END
+
+xfce_desktop_package_list:
+- firefox
+- libreoffice
+- qpdfview
+- wireshark
+- nodejs
+- icedtea-netx
+- remmina
+- gitk
+- evince
+- apt-transport-https
+- brave-browser
+- gthumb
+- keepassxc
+
+nodejs__npm_packages:
+- prettier
+
+xfce_desktop_package_list_snap:
+- name: code
+  classic: true
+- name: todoist
+  classic: false
+- name: chromium
+  classic: false
+
+systemd__default_target: 'multi-user.target'
