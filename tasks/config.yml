@@ -165,7 +165,7 @@
     dest: "{{ item.home }}/.config/xfce4/xinitrc"
     owner: "{{ item.name }}"
     group: "{{ item.name }}"
-    mode: 744
+    mode: "0744"
   with_items:
   - "{{ desktop_users }}"
   tags:
@@ -207,7 +207,7 @@
 ### Themes ### Icons
 
 - name: copy icons for panel
-  copy:
+  ansible.builtin.copy:
     src: "{{ item.icon }}"
     dest: "/usr/share/pixmaps/{{ item.icon }}"
   with_items:
