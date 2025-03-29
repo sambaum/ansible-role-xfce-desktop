@@ -75,6 +75,11 @@
 
 ### XFCE ### Desktop
 
+# - name: creating directory /.config/xfce4/terminal
+#   file:
+#     path: "/usr/share/backgrounds/xfce/"
+#     state: directory
+
 - name: copy desktop background
   ansible.builtin.copy:
     src: "wallpapers/{{ xfce_background }}"
@@ -272,40 +277,11 @@
 
 ### MIME-Types to Apps
 
-# - name: Removing MIME-Apps
-#   lineinfile:
-#     path: "{{ item.0.home }}/.config/mimeapps.list"
-#     state: absent
-#     regexp: "^{{ item.1.mimetype }}=((?!{{ item.1.default_application }}).*)"
-#   with_nested:
-#   - "{{ desktop_users }}"
-#   - "{{ xfce_desktop_mimeapps_default_applications }}"
-
-# - name: Setting MIME-Apps
-#   lineinfile:
-#     path: "{{ item.home }}/.config/mimeapps.list"
-#     state: present
-#     regexp: "^\\[Default Applications\\]"
-#     line: "[Default Applications]"
-#     insertafter: EOF
-#     create: yes
-#     owner: "{{ item.name }}"
-#     group: "{{ item.name }}"
-#   with_items:
-#   - "{{ desktop_users }}"
-#   tags:
-#   - mime
-
-# - name: Setting MIME-Apps
-#   lineinfile:
-#     path: "{{ item.0.home }}/.config/mimeapps.list"
-#     state: present
-#     regexp: "^{{ item.1.mimetype }}="
-#     line: "{{ item.1.mimetype }}={{ item.1.default_application }}; # Added by Ansible"
-#     insertafter: "^\\[Default Applications\\]"
-#     create: yes
-#   with_nested:
-#   - "{{ desktop_users }}"
-#   - "{{ xfce_desktop_mimeapps_default_applications }}"
-#   tags:
-#   - mime
+- name: Configure MIME-Types
+  ansible.builtin.template:
+    src: mimeapps.list.j2
+    dest: "{{ item.home }}/.config/mimeapps.list"
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+  with_items:
+  - "{{ desktop_users }}"

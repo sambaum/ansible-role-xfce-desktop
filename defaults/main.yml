@@ -283,3 +283,19 @@ desktop_ChromeEnterprisePolicies:
   value: "true"
 - name: BookmarkBarEnabled
   value: "true"
+
+### MIME Types ###
+
+xfce_desktop_mimeapps_default_applications:
+- mimetype: application/x-shellscript
+  default_application: code_code.desktop
+- mimetype: text/markdown
+  default_application: code_code.desktop
+- mimetype: text/plain
+  default_application: code_code.desktop
+- mimetype: application/xml
+  default_application: code_code.desktop
+- mimetype: inode/x-empty
+  default_application: code_code.desktop
+- mimetype: application/pdf
+  default_application: evince.desktop

@@ -1,0 +1,4 @@
+[Default Applications]
+{% for type in xfce_desktop_mimeapps_default_applications %}
+{{ type.mimetype }}={{ type.default_application }};
+{% endfor %}
