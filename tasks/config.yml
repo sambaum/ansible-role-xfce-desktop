@@ -1,7 +1,7 @@
 ### Browser
 
 - name: creating directory {{ item }}
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: directory
     owner: root
@@ -11,7 +11,7 @@
   - /etc/brave/policies/managed/
 
 - name: Install Brave/Chromium Extension
-  template:
+  ansible.builtin.template:
     src: ExtensionInstallForcelist.json.j2
     dest: "/etc/{{ item }}/policies/managed/ExtensionInstallForcelist.json"
     owner: root
@@ -21,7 +21,7 @@
   - brave
 
 - name: Chromium Policies
-  template:
+  ansible.builtin.template:
     src: genericChromeEnterprisePolicyTemplate.json.j2
     dest: "/etc/chromium/policies/managed/{{ item.name }}.json"
     owner: root
@@ -29,23 +29,17 @@
   with_items: "{{ desktop_ChromeEnterprisePolicies }}"
 
 - name: Brave Policies
-  template:
+  ansible.builtin.template:
     src: genericChromeEnterprisePolicyTemplate.json.j2
     dest: "/etc/brave/policies/managed/{{ item.name }}.json"
     owner: root
     group: root
   with_items: "{{ desktop_ChromeEnterprisePolicies }}"
 
-# - name: Deploy Config Files
-#   ansible.builtin.include_role:
-#     name: debops.debops.resources
-
-
-
 ### XFCE ### Generic xfce directories
 
 - name: creating directory /.config/xfce4/xfconf/xfce-perchannel-xml
-  file:
+  ansible.builtin.file:
     path: "{{ item.home }}/.config/xfce4/xfconf/xfce-perchannel-xml"
     state: directory
     owner: "{{ item.name }}"
@@ -56,7 +50,7 @@
 ### XFCE ### Terminal
 
 - name: creating directory /.config/xfce4/terminal
-  file:
+  ansible.builtin.file:
     path: "{{ item.home }}/.config/xfce4/terminal"
     state: directory
     owner: "{{ item.name }}"
@@ -65,7 +59,7 @@
   - "{{ desktop_users }}"
 
 - name: xfce terminalrc - configure
-  template:
+  ansible.builtin.template:
     src: terminalrc.j2
     dest: "{{ item.home }}/.config/xfce4/terminal/terminalrc"
     owner: "{{ item.name }}"
@@ -74,11 +68,6 @@
   - "{{ desktop_users }}"
 
 ### XFCE ### Desktop
-
-# - name: creating directory /.config/xfce4/terminal
-#   file:
-#     path: "/usr/share/backgrounds/xfce/"
-#     state: directory
 
 - name: copy desktop background
   ansible.builtin.copy:
@@ -108,7 +97,7 @@
   - "{{ xfce_desktop_files }}"
 
 - name: configure genmon
-  template:
+  ansible.builtin.template:
     src: genmon.rc.j2
     dest: "{{ item.0.home }}/.config/xfce4/panel/genmon-{{ item.1.id }}.rc"
     owner: "{{ item.0.name }}"
@@ -141,7 +130,7 @@
   when: item.1.name == "systemload"
 
 - name: configure netload panel
-  template:
+  ansible.builtin.template:
     src: netload.rc.j2
     dest: "{{ item.0.home }}/.config/xfce4/panel/netload-{{ item.1.id }}.rc"
     owner: "{{ item.0.name }}"
@@ -151,21 +140,10 @@
   - "{{ xfce_panel1_items }}"
   when: item.1.name == "netload"
 
-# - name: configure orage clock
-#   template:
-#     src: xfce4-orageclock-plugin-2.rc.j2
-#     dest: "{{ item.0.home }}/.config/xfce4/panel/xfce4-orageclock-plugin-{{ item.1.id }}.rc"
-#     owner: "{{ item.0.name }}"
-#     group: "{{ item.0.name }}"
-#   with_nested:
-#   - "{{ desktop_users }}"
-#   - "{{ xfce_panel1_items }}"
-#   when: item.1.name == "xfce4-orageclock-plugin"
-
 ### XFCE ### xinitrc
 
 - name: deploy xinitrc
-  template:
+  ansible.builtin.template:
     src: xinitrc.j2
     dest: "{{ item.home }}/.config/xfce4/xinitrc"
     owner: "{{ item.name }}"
@@ -190,7 +168,7 @@
 ### Themes ### Cursor
 
 - name: creating directory "~/.icons/"
-  file:
+  ansible.builtin.file:
     path: "{{ item.home }}/.icons/"
     state: directory
     recurse: yes
@@ -200,7 +178,7 @@
   - "{{ desktop_users }}"
 
 - name: Extract OpenZone_Black-1.2.6.tar.xz
-  unarchive:
+  ansible.builtin.unarchive:
     src: OpenZone_Black.zip
     dest: "{{ item.home }}/.icons/"
     creates: "{{ item.home }}/.icons/OpenZone_Black"
@@ -219,25 +197,10 @@
   - "{{ xfce_desktop_files + xfce_desktop_files_individual }}"
   when: item.icon is defined
 
-### screen-saver ###
-
-# in xinitrc
-
-# - name: Disable screen-saver
-#   lineinfile:
-#     path: "{{ item.home }}/.xscreensaver"
-#     regexp: '^mode:'
-#     line: 'mode:           off'
-#     create: yes
-#     owner: "{{ item.name }}"
-#     group: "{{ item.name }}"
-#   with_items:
-#   - "{{ desktop_users }}"
-
 ### Thunar ### Custom Actions
 
 - name: creating directory .config/Thunar
-  file:
+  ansible.builtin.file:
     path: "{{ item.home }}/.config/Thunar"
     state: directory
     owner: "{{ item.name }}"
@@ -246,7 +209,7 @@
   - "{{ desktop_users }}"
 
 - name: configure Thunar custom actions
-  template:
+  ansible.builtin.template:
     src: uca.xml.j2
     dest: "{{ item.home }}/.config/Thunar/uca.xml"
     owner: "{{ item.name }}"
@@ -255,25 +218,6 @@
   - "{{ desktop_users }}"
   tags:
   - thunar
-
-### thinclient_drives ### unmount
-
-# - name: place script to unmount
-#   ansible.builtin.copy:
-#     src: umount_thinclient_drives.sh.j2
-#     dest: "/opt/umount_thinclient_drives_{{ item.name }}.sh"
-#     mode: "0755"
-#     group: root
-#     owner: root
-#   with_items:
-#   - "{{ desktop_users }}"
-
-# - name: allow umount_thinclient_drives.sh for sudo
-#   lineinfile:
-#     path: /etc/sudoers
-#     line: '{{ item.name }}   ALL = (root) NOPASSWD: /opt/umount_thinclient_drives_{{ item.name }}.sh'
-#   with_items:
-#   - "{{ desktop_users }}"
 
 ### MIME-Types to Apps
 

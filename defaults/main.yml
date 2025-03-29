@@ -8,7 +8,11 @@ desktop_users:
 - name: root
   home: /root
 
+### XFCE ### Font
+
 xfce_font_name: DejaVuSansMono Nerd Font Book 10
+
+### XFCE ### Desktop/Panel
 
 xfce_desktop_files:
 - id: 203
@@ -33,12 +37,6 @@ xfce_panel1_items:
   type: string
   style: 0
   expand: "true"
-# - id: 200
-#   name: launcher
-#   type: string
-#   menu_items:
-#   - name: sublimetext3.desktop
-#     type: string
 - id: 208
   name: launcher
   type: string
@@ -119,6 +117,8 @@ xfce_monitors:
 - 0
 - 1
 - 2
+
+### Thunar ### 
 
 thunar_custom_actions:
 - icon: utilities-terminal
