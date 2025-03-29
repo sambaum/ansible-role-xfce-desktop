@@ -76,7 +76,7 @@
 ### XFCE ### Desktop
 
 - name: copy desktop background
-  copy:
+  ansible.builtin.copy:
     src: "wallpapers/{{ xfce_background }}"
     dest: "/usr/share/backgrounds/xfce/{{ xfce_background }}"
 
@@ -254,10 +254,10 @@
 ### thinclient_drives ### unmount
 
 # - name: place script to unmount
-#   template:
+#   ansible.builtin.copy:
 #     src: umount_thinclient_drives.sh.j2
 #     dest: "/opt/umount_thinclient_drives_{{ item.name }}.sh"
-#     mode: 755
+#     mode: "0755"
 #     group: root
 #     owner: root
 #   with_items:

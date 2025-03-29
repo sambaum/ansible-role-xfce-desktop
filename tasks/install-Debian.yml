@@ -1,3 +1,7 @@
+- name: Combine package lists
+  set_fact:
+    apt_install__packages: "{{ xfce_desktop_package_list_xfce + xfce_desktop_package_list }}"
+
 - name: Configure APT
   ansible.builtin.include_role:
     name: debops.debops.apt

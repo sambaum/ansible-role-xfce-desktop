@@ -1,7 +1,7 @@
 ---
 # vars file for ansible-role-xfce-desktop
 
-apt_install__packages: "{{ xfce_desktop_package_list_xfce + xfce_desktop_package_list }}"
+# apt_install__packages: "{{ xfce_desktop_package_list_xfce + xfce_desktop_package_list }}"
 
 xfce_desktop_chromium_ExtensionInstallForcelist: >-
   {{ xfce_desktop_chromium_ExtensionInstallForcelist_all | union(xfce_desktop_chromium_ExtensionInstallForcelist_group) | union(xfce_desktop_chromium_ExtensionInstallForcelist_host) | unique }}

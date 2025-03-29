@@ -33,12 +33,12 @@ xfce_panel1_items:
   type: string
   style: 0
   expand: "true"
-- id: 200
-  name: launcher
-  type: string
-  menu_items:
-  - name: sublimetext3.desktop
-    type: string
+# - id: 200
+#   name: launcher
+#   type: string
+#   menu_items:
+#   - name: sublimetext3.desktop
+#     type: string
 - id: 208
   name: launcher
   type: string
