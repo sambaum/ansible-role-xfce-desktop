@@ -3,7 +3,6 @@
 # $ xfconf-query -c xfce4-panel -l -v
 # $ xfconf-query -c xfwm4 -lv
 
-
 # Read with: xfconf-query -c xfwm4 -p /general/use_compositing
 # Default: xfconf-query -c xfwm4 -p /general/use_compositing -s true
 xfconf-query -c xfwm4 -p /general/use_compositing -t bool -s false --create
@@ -13,8 +12,8 @@ xfconf-query -c xfwm4 -p /general/use_compositing -t bool -s false --create
 xfconf-query -c xfce4-keyboard-shortcuts -p "/xfwm4/default/<Super>Tab" -s false --create
 
 # Disable Screensave/lock
-xfconf-query -c xfce4-screensaver -p /saver/enabled -s false --create
-xfconf-query -c xfce4-screensaver -p /lock/enabled -s false --create
+xfconf-query -c xfce4-screensaver -p /saver/enabled -t bool -s false --create
+xfconf-query -c xfce4-screensaver -p /lock/enabled -t bool -s false --create
 
 ########################## PANEL 1 ##########################
 
@@ -78,12 +77,12 @@ xfconf-query -c xfce4-panel -p /plugins/plugin-{{ item.id }}/show-frame -s false
 
 {% if item.name == 'systemload' %}
 xfconf-query -c xfce4-panel -p /plugins/plugin-{{ item.id }}/cpu/label -s "" -t string --create
-xfconf-query -c xfce4-panel -p /plugins/plugin-{{ item.id }}/cpu/color -s 0.207843 -s 0.517647 -s 0.894118 -s 1.000000 --create
+xfconf-query -c xfce4-panel -p /plugins/plugin-{{ item.id }}/cpu/color -t double -s 0.207843 -t double -s 0.517647 -t double -s 0.894118 -t double -s 1.000000 --create
 xfconf-query -c xfce4-panel -p /plugins/plugin-{{ item.id }}/memory/label -s "" -t string --create
-xfconf-query -c xfce4-panel -p /plugins/plugin-{{ item.id }}/memory/color -s 0.341176 -s 0.890196 -s 0.537255 -s 1.000000 --create
+xfconf-query -c xfce4-panel -p /plugins/plugin-{{ item.id }}/memory/color -t double -s 0.341176 -t double -s 0.890196 -t double -s 0.537255 -t double -s 1.000000 --create
 xfconf-query -c xfce4-panel -p /plugins/plugin-{{ item.id }}/network/label -s "" -t string --create
 xfconf-query -c xfce4-panel -p /plugins/plugin-{{ item.id }}/swap/label -s "" -t string --create
-xfconf-query -c xfce4-panel -p /plugins/plugin-{{ item.id }}/swap/color -s 0.976471 -s 0.941176 -s 0.419608 -s 1.000000 --create
+xfconf-query -c xfce4-panel -p /plugins/plugin-{{ item.id }}/swap/color -t double -s 0.976471 -t double -s 0.941176 -t double -s 0.419608 -t double -s 1.000000 --create
 xfconf-query -c xfce4-panel -p /plugins/plugin-{{ item.id }}/network/enabled -s false -t bool --create
 xfconf-query -c xfce4-panel -p /plugins/plugin-{{ item.id }}/uptime/enabled -s false -t bool --create
 {% endif %}
@@ -134,7 +133,6 @@ xfconf-query -c xfce4-keyboard-shortcuts -p "/xfwm4/default/<Primary>F6" -s "" #
 xfconf-query -c xfce4-keyboard-shortcuts -p "/xfwm4/default/<Primary>F7" -s "" # disable so byobu works
 xfconf-query -c xfce4-keyboard-shortcuts -p "/xfwm4/default/<Primary>F8" -s "" # disable so byobu works
 
-
 ### Themes ### Cursor
 xfconf-query -c xsettings -p /Gtk/CursorThemeName -t string -s OpenZone_Black --create
 
@@ -169,7 +167,7 @@ xfconf-query -c thunar -p /last-details-view-column-widths -t string -s 0,186,50
 # Numlock
 xfconf-query -c keyboards -p /Default/RestoreNumlock -n -t bool -s false
 
-. /etc/xdg/xfce4/xinitrc
-
 # No power management for display
-xfconf-query -c xfce4-power-manager -p /xfce4-power-manager/dpms-enabled -s false --create
+xfconf-query -c xfce4-power-manager -p /xfce4-power-manager/dpms-enabled -t bool -s false --create
+
+exec xfce4-session

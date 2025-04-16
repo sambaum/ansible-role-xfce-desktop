@@ -1,1 +1,1 @@
-~/.config/xfce4/xinitrc
+exec startxfce4
