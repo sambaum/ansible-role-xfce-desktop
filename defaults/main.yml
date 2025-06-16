@@ -8,6 +8,8 @@ desktop_users:
 - name: root
   home: /root
 
+xfce_background: default_background.png
+
 ### XFCE ### Font
 
 xfce_font_name: DejaVuSansMono Nerd Font Book 10

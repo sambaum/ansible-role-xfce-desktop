@@ -24,3 +24,18 @@
 - name: Configure Systemd
   ansible.builtin.include_role:
     name: debops.debops.systemd
+
+- name: Ensure correct permissions for snakeoil SSL key
+  ansible.builtin.file:
+    path: /etc/ssl/private/ssl-cert-snakeoil.key
+    owner: root
+    group: ssl-cert
+    mode: '0640'
+  notify: Restart xrdp
+
+- name: Add xrdp user to ssl-cert group
+  ansible.builtin.user:
+    name: xrdp
+    groups: ssl-cert
+    append: yes
+  notify: Restart xrdp
