@@ -170,4 +170,27 @@ xfconf-query -c keyboards -p /Default/RestoreNumlock -n -t bool -s false
 # No power management for display
 xfconf-query -c xfce4-power-manager -p /xfce4-power-manager/dpms-enabled -t bool -s false --create
 
+# Terminal
+xfconf-query -c xfce4-terminal -p / -rR
+xfconf-query -c xfce4-terminal -p /color-background             -n -t string -s "#002b36"  --create
+xfconf-query -c xfce4-terminal -p /color-background-vary        -n -t bool   -s false  --create
+xfconf-query -c xfce4-terminal -p /color-bold                   -n -t string -s "#93a1a1"  --create
+xfconf-query -c xfce4-terminal -p /color-bold-is-bright         -n -t bool   -s true  --create
+xfconf-query -c xfce4-terminal -p /color-bold-use-default       -n -t bool   -s false  --create
+xfconf-query -c xfce4-terminal -p /color-cursor                 -n -t string -s "#93a1a1"  --create
+xfconf-query -c xfce4-terminal -p /color-cursor-foreground      -n -t string -s "#002b36"  --create
+xfconf-query -c xfce4-terminal -p /color-cursor-use-default     -n -t bool   -s true  --create
+xfconf-query -c xfce4-terminal -p /color-foreground             -n -t string -s "#839496"  --create
+xfconf-query -c xfce4-terminal -p /color-palette                -n -t string -s "#073642;#dc322f;#859900;#b58900;#268bd2;#d33682;#2aa198;#eee8d5;#002b36;#cb4b16;#586e75;#657b83;#839496;#6c71c4;#93a1a1;#fdf6e3"  --create
+xfconf-query -c xfce4-terminal -p /color-selection              -n -t string -s "#93a1a1"  --create
+xfconf-query -c xfce4-terminal -p /color-selection-background   -n -t string -s "#002b36"  --create
+xfconf-query -c xfce4-terminal -p /color-selection-use-default  -n -t bool   -s true  --create
+xfconf-query -c xfce4-terminal -p /color-use-theme              -n -t bool   -s false  --create
+xfconf-query -c xfce4-terminal -p /font-name                    -n -t string -s "Monospace 10"  --create
+xfconf-query -c xfce4-terminal -p /font-use-system              -n -t bool   -s false  --create
+xfconf-query -c xfce4-terminal -p /misc-default-geometry        -n -t string -s "140x40"  --create
+xfconf-query -c xfce4-terminal -p /scrolling-unlimited          -n -t bool   -s true  --create
+xfconf-query -c xfce4-terminal -p /tab-activity-color           -n -t string -s "#dc322f"  --create
+
+# Start Session (must be last)
 exec xfce4-session
