@@ -47,26 +47,6 @@
   with_items:
   - "{{ desktop_users }}"
 
-### XFCE ### Terminal
-
-- name: creating directory /.config/xfce4/terminal
-  ansible.builtin.file:
-    path: "{{ item.home }}/.config/xfce4/terminal"
-    state: directory
-    owner: "{{ item.name }}"
-    group: "{{ item.name }}"
-  with_items:
-  - "{{ desktop_users }}"
-
-- name: xfce terminalrc - configure
-  ansible.builtin.template:
-    src: terminalrc.j2
-    dest: "{{ item.home }}/.config/xfce4/terminal/terminalrc"
-    owner: "{{ item.name }}"
-    group: "{{ item.name }}"
-  with_items:
-  - "{{ desktop_users }}"
-
 ### XFCE ### Desktop
 
 - name: copy desktop background
