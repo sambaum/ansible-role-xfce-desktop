@@ -1,0 +1,40 @@
+# experimenting with xrdp improvements/tweaks for better stability with xfce4
+
+- name: Ensure Policy=UBI is set in /etc/xrdp/sesman.ini
+  ansible.builtin.lineinfile:
+    path: /etc/xrdp/sesman.ini
+    regexp: '^IdleTimeLimit='
+    line: 'IdleTimeLimit={{ xrdp_IdleTimeLimit }}'
+    insertafter: '^\[Sessions\]'
+    state: present
+    create: no
+    backup: yes
+  notify:
+  - Restart xrdp
+  - Restart xrdp-sesman
+
+# - name: Ensure tcp_keepalive=true is set in /etc/xrdp/xrdp.ini
+#   ansible.builtin.lineinfile:
+#     path: /etc/xrdp/xrdp.ini
+#     regexp: '^tcp_keepalive='
+#     line: 'tcp_keepalive=true'
+#     insertafter: '^\[Globals\]'
+#     state: present
+#     create: no
+#     backup: yes
+#   notify:
+#   - Restart xrdp
+#   - Restart xrdp-sesman
+
+# test if /etc/xrdp/startwm.sh over files/startwm-default.sh works better.
+- name: Deploy /etc/xrdp/startwm.sh (reconnect-safe version)
+  ansible.builtin.copy:
+    src: files/startwm.sh
+    # src: files/startwm-default.sh
+    dest: /etc/xrdp/startwm.sh
+    owner: root
+    group: root
+    mode: '0755'
+    backup: yes
+  notify:
+  - Restart xrdp-sesman
