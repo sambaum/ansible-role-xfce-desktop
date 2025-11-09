@@ -10,7 +10,7 @@ desktop_users:
 
 xfce_background: default_background.png
 
-xrdp_IdleTimeLimit: 600
+xrdp_IdleTimeLimit: 0
 
 ### XFCE ### Font
 
