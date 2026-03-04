@@ -13,11 +13,37 @@
   - Restart xrdp
   - Restart xrdp-sesman
 
+- name: Set KillDisconnected in /etc/xrdp/sesman.ini
+  ansible.builtin.lineinfile:
+    path: /etc/xrdp/sesman.ini
+    regexp: '^KillDisconnected='
+    line: 'KillDisconnected={{ xrdp_KillDisconnected }}'
+    insertafter: '^\[Sessions\]'
+    state: present
+    create: no
+    backup: yes
+  notify:
+  - Restart xrdp
+  - Restart xrdp-sesman
+
+- name: Set DisconnectedTimeLimit in /etc/xrdp/sesman.ini
+  ansible.builtin.lineinfile:
+    path: /etc/xrdp/sesman.ini
+    regexp: '^DisconnectedTimeLimit='
+    line: 'DisconnectedTimeLimit={{ xrdp_DisconnectedTimeLimit }}'
+    insertafter: '^\[Sessions\]'
+    state: present
+    create: no
+    backup: yes
+  notify:
+  - Restart xrdp
+  - Restart xrdp-sesman
+
 # test if /etc/xrdp/startwm.sh over files/startwm-default.sh works better.
 - name: Deploy /etc/xrdp/startwm.sh (reconnect-safe version)
   ansible.builtin.copy:
-    src: files/startwm.sh
-    # src: files/startwm-default.sh
+    # src: files/startwm.sh
+    src: files/startwm-default.sh
     dest: /etc/xrdp/startwm.sh
     owner: root
     group: root

@@ -10,7 +10,9 @@ desktop_users:
 
 xfce_background: default_background.png
 
-xrdp_IdleTimeLimit: 0
+xrdp_IdleTimeLimit: 0 # time until RDP disconnect
+xrdp_KillDisconnected: false # if RDP logoff should happen after xrdp_DisconnectedTimeLimit
+xrdp_DisconnectedTimeLimit: 14400 # time until RDP logoff
 
 ### XFCE ### Font
 
@@ -28,6 +30,8 @@ xfce_desktop_files:
   name: brave-browser.desktop
 - id: 209
   name: vscode.desktop
+
+xfce_desktop_files_individual: []
 
 xfce_panel1_items:
 - id: 100
