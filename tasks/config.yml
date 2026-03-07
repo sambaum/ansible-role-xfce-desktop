@@ -209,3 +209,43 @@
     group: "{{ item.name }}"
   with_items:
   - "{{ desktop_users }}"
+
+### Kitty ### Config
+
+- name: creating directory .config/kitty
+  ansible.builtin.file:
+    path: "{{ item.home }}/.config/kitty"
+    state: directory
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+  with_items:
+  - "{{ desktop_users }}"
+
+- name: deploy kitty.conf
+  ansible.builtin.copy:
+    src: kitty.conf
+    dest: "{{ item.home }}/.config/kitty/kitty.conf"
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+  with_items:
+  - "{{ desktop_users }}"
+
+### Zellij ### Config
+
+- name: creating directory .config/zellij
+  ansible.builtin.file:
+    path: "{{ item.home }}/.config/zellij"
+    state: directory
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+  with_items:
+  - "{{ desktop_users }}"
+
+- name: deploy zellij.conf
+  ansible.builtin.copy:
+    src: zellij-config.kdl
+    dest: "{{ item.home }}/.config/zellij/zellij.kdl"
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+  with_items:
+  - "{{ desktop_users }}"
