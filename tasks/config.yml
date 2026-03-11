@@ -157,7 +157,7 @@
   with_items:
   - "{{ desktop_users }}"
 
-- name: Extract OpenZone_Black-1.2.6.tar.xz
+- name: Extract OpenZone_Black.zip
   ansible.builtin.unarchive:
     src: OpenZone_Black.zip
     dest: "{{ item.home }}/.icons/"

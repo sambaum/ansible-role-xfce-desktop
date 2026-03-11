@@ -5,6 +5,8 @@
 - name: Configure APT
   ansible.builtin.include_role:
     name: debops.debops.apt
+  vars:
+    apt__cache_valid_time: 0
 
 - name: Install XFCE Packages
   ansible.builtin.include_role:
