@@ -15,6 +15,10 @@ xfconf-query -c xfce4-keyboard-shortcuts -p "/xfwm4/default/<Super>Tab" -s false
 xfconf-query -c xfce4-screensaver -p /saver/enabled -t bool -s false --create
 xfconf-query -c xfce4-screensaver -p /lock/enabled -t bool -s false --create
 
+# Theme
+xfconf-query -c xfwm4 -p /general/theme -s "{{ xfce_theme }}" -t string --create
+xfconf-query -c xsettings -p /Net/ThemeName -s "{{ xfce_theme }}" -t string --create
+
 ########################## PANEL 1 ##########################
 
 # to have only one panel and remove the second panel
