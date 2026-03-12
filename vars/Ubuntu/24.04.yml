@@ -49,6 +49,7 @@ xfce_desktop_package_list_xfce:
 - dbus-x11
 - xorgxrdp
 - greybird-gtk-theme
+- arc-theme
 
 xfce_desktop_package_list:
 - firefox
