@@ -25,9 +25,6 @@ xfce_theme: Greybird
 ### XFCE ### Desktop/Panel
 
 xfce_desktop_files:
-- id: 203
-  name: terminal_emulator.desktop
-  icon: zsh.png
 - id: 204
   name: kitty.desktop
 - id: 205
@@ -62,12 +59,6 @@ xfce_panel1_items:
   type: string
   menu_items:
   - name: vscode.desktop
-    type: string
-- id: 203
-  name: launcher
-  type: string
-  menu_items:
-  - name: terminal_emulator.desktop
     type: string
 - id: 204
   name: launcher
