@@ -39,7 +39,33 @@
   - Restart xrdp
   - Restart xrdp-sesman
 
+# TCP keepalive tuning: detect dead connections (Windows sleep etc.) in ~4 min
+# instead of the OS default of ~2 hours.
+- name: Deploy TCP keepalive tuning for xrdp
+  ansible.builtin.copy:
+    dest: /etc/sysctl.d/60-xrdp-tcp-keepalive.conf
+    content: |
+      # Detect dead xrdp connections (e.g. client PC went to sleep) quickly so
+      # the session is marked disconnected and reconnection works cleanly.
+      # Detection time: 120s idle + 4 * 30s = ~4 minutes.
+      net.ipv4.tcp_keepalive_time = 120
+      net.ipv4.tcp_keepalive_intvl = 30
+      net.ipv4.tcp_keepalive_probes = 4
+    owner: root
+    group: root
+    mode: '0644'
+  when: xrdp_tcp_keepalive_tuning | bool
+  notify: Reload sysctl
+
+- name: Remove TCP keepalive tuning for xrdp (revert to OS defaults)
+  ansible.builtin.file:
+    path: /etc/sysctl.d/60-xrdp-tcp-keepalive.conf
+    state: absent
+  when: not (xrdp_tcp_keepalive_tuning | bool)
+  notify: Reload sysctl
+
 # test if /etc/xrdp/startwm.sh over files/startwm-default.sh works better.
+# Verdict: This section can be deleted, unless some client have the workaround (/etc/xrdp/startwm.sh) configured.
 - name: Deploy /etc/xrdp/startwm.sh (reconnect-safe version)
   ansible.builtin.copy:
     # src: files/startwm.sh
