@@ -1,5 +1,19 @@
 # experimenting with xrdp improvements/tweaks for better stability with xfce4
 
+# Prevent needrestart from auto-restarting xrdp after library upgrades (e.g.
+# libssl). needrestart runs as a dpkg post-invoke hook and would otherwise
+# restart xrdp mid-session whenever a linked library is updated.
+- name: Deploy needrestart override to prevent xrdp auto-restart
+  ansible.builtin.copy:
+    dest: /etc/needrestart/conf.d/xrdp.conf
+    content: |
+      # Do not automatically restart xrdp services after library upgrades.
+      # xrdp session restarts kill active desktop sessions.
+      $nrconf{override_rc}{qr(^xrdp)} = 0;
+    owner: root
+    group: root
+    mode: '0644'
+
 - name: Set IdleTimeLimit in /etc/xrdp/sesman.ini
   ansible.builtin.lineinfile:
     path: /etc/xrdp/sesman.ini
