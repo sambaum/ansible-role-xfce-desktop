@@ -1,0 +1,27 @@
+layout {
+    default_tab_template {
+        pane size=1 borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        children
+        pane size=2 borderless=true {
+            plugin location="zellij:status-bar"
+        }
+    }
+    tab name="Ansible" {
+        pane
+    }
+    tab name="k8s" {
+        pane command="ssh" {
+            args "dumpster.int.sambaum.ch"
+        }
+    }
+    tab name="k8s-root" {
+        pane command="ssh" {
+            args "-t" "dumpster.int.sambaum.ch" "sudo su - root"
+        }
+    }
+    tab name="extra" {
+        pane
+    }
+}

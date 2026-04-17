@@ -249,3 +249,21 @@
     group: "{{ item.name }}"
   with_items:
   - "{{ desktop_users }}"
+
+- name: creating directory .config/zellij/layouts
+  ansible.builtin.file:
+    path: "{{ item.home }}/.config/zellij/layouts"
+    state: directory
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+  with_items:
+  - "{{ desktop_users }}"
+
+- name: deploy zellij default layout
+  ansible.builtin.copy:
+    src: zellij-layout-default.kdl
+    dest: "{{ item.home }}/.config/zellij/layouts/default.kdl"
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+  with_items:
+  - "{{ desktop_users }}"
