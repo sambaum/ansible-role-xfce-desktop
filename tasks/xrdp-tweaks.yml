@@ -78,6 +78,24 @@
   when: not (xrdp_tcp_keepalive_tuning | bool)
   notify: Reload sysctl
 
+- name: Deploy /etc/xrdp/reconnectwm.sh (restart WM if it crashed while disconnected)
+  ansible.builtin.copy:
+    src: files/reconnectwm.sh
+    dest: /etc/xrdp/reconnectwm.sh
+    owner: root
+    group: root
+    mode: '0755'
+  when: xrdp_reconnectwm_restart_wm | bool
+
+- name: Revert /etc/xrdp/reconnectwm.sh to xrdp default (empty script)
+  ansible.builtin.copy:
+    content: "#!/bin/sh\n"
+    dest: /etc/xrdp/reconnectwm.sh
+    owner: root
+    group: root
+    mode: '0755'
+  when: not (xrdp_reconnectwm_restart_wm | bool)
+
 # test if /etc/xrdp/startwm.sh over files/startwm-default.sh works better.
 # Verdict: This section can be deleted, unless some client have the workaround (/etc/xrdp/startwm.sh) configured.
 - name: Deploy /etc/xrdp/startwm.sh (reconnect-safe version)
