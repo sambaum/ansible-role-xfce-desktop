@@ -9,7 +9,9 @@ layout {
         }
     }
     tab name="Ansible" {
-        pane
+        pane command="bash" {
+            args "-c" "sudo su - -c 'cd /etc/ansible && exec zsh'"
+        }
     }
     tab name="k8s" {
         pane command="ssh" {
