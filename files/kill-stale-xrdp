@@ -1,0 +1,32 @@
+#!/bin/sh
+# Kill an xrdp process that holds the Xorg display socket but whose TCP
+# connection to the client is backed up (Send-Q > 0), which indicates the
+# client is unreachable — e.g. a Windows PC that went to sleep without
+# cleanly disconnecting the RDP session.
+# Called from reconnectwm.sh via sudo on every session reconnect.
+
+display_num="$1"
+[ -z "$display_num" ] && exit 0
+
+# Find the xrdp PID currently holding the Xorg display socket.
+xrdp_pid=$(ss -Hxp 2>/dev/null \
+    | grep -F "/run/xrdp/sockdir/xrdp_display_${display_num}" \
+    | grep -oP 'pid=\K[0-9]+' \
+    | head -1)
+
+[ -z "$xrdp_pid" ] && exit 0
+
+# Safety check: confirm it is actually an xrdp process.
+case "$(ps -p "$xrdp_pid" -o args= 2>/dev/null)" in
+    *xrdp*) : ;;
+    *) exit 0 ;;
+esac
+
+# Check the TCP Send-Q for this process. A non-zero Send-Q means data is
+# queued but the client is not ACKing it — the session is stale.
+send_q=$(ss -Htnp 2>/dev/null \
+    | awk -v pid="pid=${xrdp_pid}," '$1=="ESTAB" && $NF ~ pid { print $3; exit }')
+
+if [ -n "$send_q" ] && [ "$send_q" -gt 0 ] 2>/dev/null; then
+    kill "$xrdp_pid"
+fi

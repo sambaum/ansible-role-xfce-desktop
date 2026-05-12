@@ -96,6 +96,34 @@
     mode: '0755'
   when: not (xrdp_reconnectwm_restart_wm | bool)
 
+- name: Deploy /usr/local/sbin/kill-stale-xrdp (kills stale xrdp on reconnect)
+  ansible.builtin.copy:
+    src: files/kill-stale-xrdp
+    dest: /usr/local/sbin/kill-stale-xrdp
+    owner: root
+    group: root
+    mode: '0755'
+  when: xrdp_reconnectwm_restart_wm | bool
+
+- name: Deploy sudoers rule for kill-stale-xrdp
+  ansible.builtin.template:
+    src: templates/sudoers-xrdp-reconnect.j2
+    dest: /etc/sudoers.d/xrdp-reconnect
+    owner: root
+    group: root
+    mode: '0440'
+    validate: visudo -cf %s
+  when: xrdp_reconnectwm_restart_wm | bool
+
+- name: Revert kill-stale-xrdp and sudoers rule
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+  - /usr/local/sbin/kill-stale-xrdp
+  - /etc/sudoers.d/xrdp-reconnect
+  when: not (xrdp_reconnectwm_restart_wm | bool)
+
 # test if /etc/xrdp/startwm.sh over files/startwm-default.sh works better.
 # Verdict: This section can be deleted, unless some client have the workaround (/etc/xrdp/startwm.sh) configured.
 - name: Deploy /etc/xrdp/startwm.sh (reconnect-safe version)

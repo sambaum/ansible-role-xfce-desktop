@@ -1,0 +1,5 @@
+# Allow desktop users to kill stale xrdp display processes on reconnect
+# without a password prompt (called from reconnectwm.sh).
+{% for u in desktop_users %}
+{{ u.name }} ALL=(root) NOPASSWD: /usr/local/sbin/kill-stale-xrdp
+{% endfor %}
