@@ -241,10 +241,17 @@
   with_items:
   - "{{ desktop_users }}"
 
+- name: remove old zellij.kdl (wrong config filename, deployed before 2026-05)
+  ansible.builtin.file:
+    path: "{{ item.home }}/.config/zellij/zellij.kdl"
+    state: absent
+  with_items:
+  - "{{ desktop_users }}"
+
 - name: deploy zellij.conf
   ansible.builtin.copy:
     src: zellij-config.kdl
-    dest: "{{ item.home }}/.config/zellij/zellij.kdl"
+    dest: "{{ item.home }}/.config/zellij/config.kdl"
     owner: "{{ item.name }}"
     group: "{{ item.name }}"
   with_items:
@@ -261,9 +268,14 @@
 
 - name: deploy zellij default layout
   ansible.builtin.copy:
-    src: zellij-layout-default.kdl
+    src: "{{ lookup('first_found', zellij_layout_candidates) }}"
     dest: "{{ item.home }}/.config/zellij/layouts/default.kdl"
     owner: "{{ item.name }}"
     group: "{{ item.name }}"
+  vars:
+    zellij_layout_candidates:
+      - "zellij-layouts/{{ inventory_hostname }}.kdl"
+      - "zellij-layouts/{{ group_names | first }}.kdl"
+      - "zellij-layouts/default.kdl"
   with_items:
   - "{{ desktop_users }}"

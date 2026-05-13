@@ -1,0 +1,25 @@
+layout {
+    default_tab_template {
+        pane size=1 borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        children
+        pane size=2 borderless=true {
+            plugin location="zellij:status-bar"
+        }
+    }
+
+    tab name="k8s" {
+        pane command="bash" {
+            args "-c" "cd ~/k8s && exec zsh"
+        }
+    }
+    tab name="k8s-root" {
+        pane command="bash" {
+            args "-c" "sudo su - root -c 'cd /conf && exec zsh'"
+        }
+    }
+    tab name="extra" {
+        pane
+    }
+}
