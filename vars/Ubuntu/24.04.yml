@@ -5,6 +5,12 @@ apt__repositories:
   signed_by: https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
   suites: 'stable'
   components: "main"
+- name: vscode
+  filename: vscode.sources
+  uris: https://packages.microsoft.com/repos/code
+  signed_by: /etc/apt/keyrings/microsoft.gpg
+  suites: 'stable'
+  components: "main"
 
 xfce_desktop_package_list_xfce:
 - xfce4
@@ -66,13 +72,14 @@ xfce_desktop_package_list:
 - gthumb
 - keepassxc
 - kitty
+- code
 
 nodejs__npm_packages:
 - prettier
 
 xfce_desktop_package_list_snap:
 - name: code
-  classic: true
+  state: absent
 - name: todoist
   classic: false
 - name: chromium
