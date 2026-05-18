@@ -14,9 +14,9 @@ xfce_background: default_background.png
 # Use this after removing or reordering panel items to clean up orphaned files.
 xfce_panel_clean: false
 
-xrdp_IdleTimeLimit: 0 # time until RDP disconnect
-xrdp_KillDisconnected: false # if RDP logoff should happen after xrdp_DisconnectedTimeLimit
-xrdp_DisconnectedTimeLimit: 14400 # time until RDP logoff
+xrdp_idle_time_limit: 0 # time until RDP disconnect
+xrdp_kill_disconnected: false # if RDP logoff should happen after xrdp_disconnected_time_limit
+xrdp_disconnected_time_limit: 14400 # time until RDP logoff
 
 # Tune OS TCP keepalive to detect dead connections (e.g. Windows sleep) within
 # a few minutes instead of the default 2 hours. Set to false to revert to
@@ -45,9 +45,9 @@ xfce_theme: Greybird
 
 ### XFCE ### Desktop/Panel
 
-xfce_desktop_files_individual: []
+xfce_panel_extra_items: []
 
-xfce_panel1_items:
+xfce_panel_items:
 - name: whiskermenu
 - name: tasklist
 - name: separator
@@ -92,9 +92,9 @@ xfce_monitors:
 - 1
 - 2
 
-### Thunar ### 
+### Thunar ###
 
-thunar_custom_actions:
+xfce_thunar_custom_actions:
 - icon: utilities-terminal
   name: Open Terminal Here
   unique_id: 1530613397035048-11
@@ -228,7 +228,7 @@ thunar_custom_actions:
 
 ### Browser ### Extensions
 
-xfce_desktop_chromium_ExtensionInstallForcelist_all:
+chromium_force_extensions_all:
 - name: Raindrop.io
   id: ldgfbffkinooeloadekpmfoklnobpien
 - name: Bitwarden
@@ -241,12 +241,12 @@ xfce_desktop_chromium_ExtensionInstallForcelist_all:
   id: jonikckfpolfcdcgdficelkfffkloemh
 - name: I don't care about cookies
   id: fihnjjcciajhdojfnbdddfaoknhalnja
-xfce_desktop_chromium_ExtensionInstallForcelist_group: []
-xfce_desktop_chromium_ExtensionInstallForcelist_host: []
+chromium_force_extensions_group: []
+chromium_force_extensions_host: []
 
 ### Browser ### Policies
 
-desktop_ChromeEnterprisePolicies:
+chromium_enterprise_policies:
 - name: PasswordManagerEnabled
   value: "false"
 - name: AutofillAddressEnabled
@@ -260,7 +260,7 @@ desktop_ChromeEnterprisePolicies:
 
 ### MIME Types ###
 
-xfce_desktop_mimeapps_default_applications:
+xfce_default_applications:
 - mimetype: application/x-shellscript
   default_application: code_code.desktop
 - mimetype: text/markdown

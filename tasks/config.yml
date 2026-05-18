@@ -1,8 +1,8 @@
 - name: auto-assign panel item IDs
   ansible.builtin.set_fact:
-    xfce_panel1_items: >-
+    xfce_panel_items: >-
       {%- set result = [] -%}
-      {%- for item in xfce_panel1_items -%}
+      {%- for item in xfce_panel_items -%}
         {%- set _ = result.append(item | combine({'id': loop.index})) -%}
       {%- endfor -%}
       {{ result }}
@@ -35,7 +35,7 @@
     dest: "/etc/chromium/policies/managed/{{ item.name }}.json"
     owner: root
     group: root
-  loop: "{{ desktop_ChromeEnterprisePolicies }}"
+  loop: "{{ chromium_enterprise_policies }}"
 
 - name: Brave Policies
   ansible.builtin.template:
@@ -43,7 +43,7 @@
     dest: "/etc/brave/policies/managed/{{ item.name }}.json"
     owner: root
     group: root
-  loop: "{{ desktop_ChromeEnterprisePolicies }}"
+  loop: "{{ chromium_enterprise_policies }}"
 
 ### XFCE ### Generic xfce directories
 
@@ -77,7 +77,7 @@
     state: directory
     owner: "{{ item.0.name }}"
     group: "{{ item.0.name }}"
-  loop: "{{ desktop_users | product(xfce_panel1_items | selectattr('desktop_file', 'defined') | list) | list }}"
+  loop: "{{ desktop_users | product(xfce_panel_items | selectattr('desktop_file', 'defined') | list) | list }}"
 
 - name: deploy desktop files
   ansible.builtin.copy:
@@ -85,7 +85,7 @@
     dest: "{{ item.0.home }}/.config/xfce4/panel/launcher-{{ item.1.id }}/{{ item.1.desktop_file }}"
     owner: "{{ item.0.name }}"
     group: "{{ item.0.name }}"
-  loop: "{{ desktop_users | product(xfce_panel1_items | selectattr('desktop_file', 'defined') | list) | list }}"
+  loop: "{{ desktop_users | product(xfce_panel_items | selectattr('desktop_file', 'defined') | list) | list }}"
 
 - name: configure genmon
   ansible.builtin.template:
@@ -93,7 +93,7 @@
     dest: "{{ item.0.home }}/.config/xfce4/panel/genmon-{{ item.1.id }}.rc"
     owner: "{{ item.0.name }}"
     group: "{{ item.0.name }}"
-  loop: "{{ desktop_users | product(xfce_panel1_items | selectattr('name', 'equalto', 'genmon') | list) | list }}"
+  loop: "{{ desktop_users | product(xfce_panel_items | selectattr('name', 'equalto', 'genmon') | list) | list }}"
 
 - name: configure whiskermenu
   ansible.builtin.copy:
@@ -101,7 +101,7 @@
     dest: "{{ item.0.home }}/.config/xfce4/panel/whiskermenu-{{ item.1.id }}.rc"
     owner: "{{ item.0.name }}"
     group: "{{ item.0.name }}"
-  loop: "{{ desktop_users | product(xfce_panel1_items | selectattr('name', 'equalto', 'whiskermenu') | list) | list }}"
+  loop: "{{ desktop_users | product(xfce_panel_items | selectattr('name', 'equalto', 'whiskermenu') | list) | list }}"
 
 - name: configure systemload panel
   ansible.builtin.copy:
@@ -109,7 +109,7 @@
     dest: "{{ item.0.home }}/.config/xfce4/panel/systemload-{{ item.1.id }}.rc"
     owner: "{{ item.0.name }}"
     group: "{{ item.0.name }}"
-  loop: "{{ desktop_users | product(xfce_panel1_items | selectattr('name', 'equalto', 'systemload') | list) | list }}"
+  loop: "{{ desktop_users | product(xfce_panel_items | selectattr('name', 'equalto', 'systemload') | list) | list }}"
 
 - name: configure netload panel
   ansible.builtin.template:
@@ -117,7 +117,7 @@
     dest: "{{ item.0.home }}/.config/xfce4/panel/netload-{{ item.1.id }}.rc"
     owner: "{{ item.0.name }}"
     group: "{{ item.0.name }}"
-  loop: "{{ desktop_users | product(xfce_panel1_items | selectattr('name', 'equalto', 'netload') | list) | list }}"
+  loop: "{{ desktop_users | product(xfce_panel_items | selectattr('name', 'equalto', 'netload') | list) | list }}"
 
 ### XFCE ### panel XML (deployed as file to avoid xfconf-query array+subproperty limitations)
 
@@ -200,7 +200,7 @@
   ansible.builtin.copy:
     src: "{{ item.icon }}"
     dest: "/usr/share/pixmaps/{{ item.icon }}"
-  loop: "{{ (xfce_panel1_items | selectattr('desktop_file', 'defined') | list) + xfce_desktop_files_individual }}"
+  loop: "{{ (xfce_panel_items | selectattr('desktop_file', 'defined') | list) + xfce_panel_extra_items }}"
   when: item.icon is defined
 
 ### Thunar ### Custom Actions

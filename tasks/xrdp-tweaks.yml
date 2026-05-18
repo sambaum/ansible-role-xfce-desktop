@@ -18,7 +18,7 @@
   ansible.builtin.lineinfile:
     path: /etc/xrdp/sesman.ini
     regexp: '^IdleTimeLimit='
-    line: 'IdleTimeLimit={{ xrdp_IdleTimeLimit }}'
+    line: 'IdleTimeLimit={{ xrdp_idle_time_limit }}'
     insertafter: '^\[Sessions\]'
     state: present
     create: no
@@ -31,7 +31,7 @@
   ansible.builtin.lineinfile:
     path: /etc/xrdp/sesman.ini
     regexp: '^KillDisconnected='
-    line: 'KillDisconnected={{ xrdp_KillDisconnected }}'
+    line: 'KillDisconnected={{ xrdp_kill_disconnected }}'
     insertafter: '^\[Sessions\]'
     state: present
     create: no
@@ -44,7 +44,7 @@
   ansible.builtin.lineinfile:
     path: /etc/xrdp/sesman.ini
     regexp: '^DisconnectedTimeLimit='
-    line: 'DisconnectedTimeLimit={{ xrdp_DisconnectedTimeLimit }}'
+    line: 'DisconnectedTimeLimit={{ xrdp_disconnected_time_limit }}'
     insertafter: '^\[Sessions\]'
     state: present
     create: no

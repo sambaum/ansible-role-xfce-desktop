@@ -19,14 +19,14 @@
       <property name="position-locked" type="bool" value="true"/>
       <property name="length" type="uint" value="100"/>
       <property name="plugin-ids" type="array">
-{% for p_item in xfce_panel1_items %}
+{% for p_item in xfce_panel_items %}
         <value type="int" value="{{ p_item.id }}"/>
 {% endfor %}
       </property>
     </property>
   </property>
   <property name="plugins" type="empty">
-{% for p_item in xfce_panel1_items %}
+{% for p_item in xfce_panel_items %}
     <property name="plugin-{{ p_item.id }}" type="string" value="{{ p_item.name }}">
 {% if p_item.name == 'separator' %}
       <property name="expand" type="bool" value="{{ p_item.expand | lower }}"/>

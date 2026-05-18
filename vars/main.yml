@@ -1,4 +1,4 @@
 ---
 
-xfce_desktop_chromium_ExtensionInstallForcelist: >-
-  {{ xfce_desktop_chromium_ExtensionInstallForcelist_all | union(xfce_desktop_chromium_ExtensionInstallForcelist_group) | union(xfce_desktop_chromium_ExtensionInstallForcelist_host) | unique }}
+chromium_force_extensions: >-
+  {{ chromium_force_extensions_all | union(chromium_force_extensions_group) | union(chromium_force_extensions_host) | unique }}
