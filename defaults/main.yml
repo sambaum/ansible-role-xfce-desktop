@@ -37,7 +37,7 @@ xfce_nerd_fonts:
 
 ### XFCE ### Font
 
-xfce_font_name: DejaVuSansMono Nerd Font Book 10
+xfce_font_name: DejaVuSansM Nerd Font
 
 ### XFCE ### Theme
 
@@ -101,130 +101,130 @@ xfce_thunar_custom_actions:
   command: exo-open --working-directory %f --launch TerminalEmulator
   description: Open Terminal for directories
   patterns: "*"
-  startup_notify: yes
-  directories: yes
-  audio_files: no
-  image_files: no
-  other_files: no
-  text_files: no
-  video_files: no
+  startup_notify: true
+  directories: true
+  audio_files: false
+  image_files: false
+  other_files: false
+  text_files: false
+  video_files: false
 - icon: utilities-terminal
   name: Open Terminal Here
   unique_id: 1530613397035049-11
   command: exo-open --working-directory %d --launch TerminalEmulator
   description: Open Terminal for files
   patterns: "*"
-  startup_notify: yes
-  directories: no
-  audio_files: yes
-  image_files: yes
-  other_files: yes
-  text_files: yes
-  video_files: yes
+  startup_notify: true
+  directories: false
+  audio_files: true
+  image_files: true
+  other_files: true
+  text_files: true
+  video_files: true
 - icon: folder-red
   name: Open A Root Thunar Here
   unique_id: 1524057598220529-4
   command: pkexec thunar %d
   description: Open Root Thunar for files
   patterns: "*"
-  startup_notify: yes
-  directories: no
-  audio_files: yes
-  image_files: yes
-  other_files: yes
-  text_files: yes
-  video_files: yes
+  startup_notify: true
+  directories: false
+  audio_files: true
+  image_files: true
+  other_files: true
+  text_files: true
+  video_files: true
 - icon: application-x-tar
   name: Add to *.tar
   unique_id: 1530618852531265-20
   command: tar -cf %f.tar -C %d %N
   description:
   patterns: "*"
-  startup_notify: yes
-  directories: yes
-  audio_files: yes
-  image_files: yes
-  other_files: yes
-  text_files: yes
-  video_files: yes
+  startup_notify: true
+  directories: true
+  audio_files: true
+  image_files: true
+  other_files: true
+  text_files: true
+  video_files: true
 - icon: application-x-gzip-compressed-tar
   name: Add to *.tgz
   unique_id: 1530611592104476-9
   command: tar -czf %f.tgz -C %d %N
   description:
   patterns: "*"
-  startup_notify: yes
-  directories: yes
-  audio_files: yes
-  image_files: yes
-  other_files: yes
-  text_files: yes
-  video_files: yes
+  startup_notify: true
+  directories: true
+  audio_files: true
+  image_files: true
+  other_files: true
+  text_files: true
+  video_files: true
 - icon: 7zip
   name: Add or Update to *.7z
   unique_id: 1530618442640258-15
   command: 7z a %n.7z %F
   description:
   patterns: "*"
-  startup_notify: yes
-  directories: yes
-  audio_files: yes
-  image_files: yes
-  other_files: yes
-  text_files: yes
-  video_files: yes
+  startup_notify: true
+  directories: true
+  audio_files: true
+  image_files: true
+  other_files: true
+  text_files: true
+  video_files: true
 - icon: accessories-clipboard
   name: Copy Pathname
   unique_id: 1530618442640259-15
   command: echo -n %f | xclip -selection clipboard
   description: Copy full path name to clipboard
   patterns: "*"
-  startup_notify: no
-  directories: yes
-  audio_files: yes
-  image_files: yes
-  other_files: yes
-  text_files: yes
-  video_files: yes
+  startup_notify: false
+  directories: true
+  audio_files: true
+  image_files: true
+  other_files: true
+  text_files: true
+  video_files: true
 - icon: accessories-character-map-symbolic
   name: Slugify Filename
   unique_id: 1530618442640270-14
   command: for file in %N; do mv "$file" "$(echo "$file" | tr -s ' ' | tr ' A-Z' '-a-z' | tr -s '-' | tr -c '[:alnum:][:cntrl:].' '-')"; done
   description: Rename the currently selected files, making the filenames lower-case and replacing spaces with dashes.
   patterns: "*"
-  startup_notify: no
-  directories: yes
-  audio_files: yes
-  image_files: yes
-  other_files: yes
-  text_files: yes
-  video_files: yes
+  startup_notify: false
+  directories: true
+  audio_files: true
+  image_files: true
+  other_files: true
+  text_files: true
+  video_files: true
 - icon: application-x-cd-image
   name: Open with ISO Master
   unique_id: 1530618442640280-15
   command: isomaster %f
   description: Open with ISO Master
   patterns: "*.iso"
-  startup_notify: yes
-  directories: no
-  audio_files: no
-  image_files: no
-  other_files: yes
-  text_files: no
-  video_files: no
+  startup_notify: true
+  directories: false
+  audio_files: false
+  image_files: false
+  other_files: true
+  text_files: false
+  video_files: false
 - icon: gitkraken
   name: Open with GitKraken
   unique_id: 1530617442640280-15
   command: gitkraken -p %f
   description: Open with GitKraken
   patterns: "*"
-  startup_notify: no
-  directories: yes
-  audio_files: yes
-  image_files: yes
-  other_files: yes
-  text_files: yes
-  video_files: yes
+  startup_notify: false
+  directories: true
+  audio_files: true
+  image_files: true
+  other_files: true
+  text_files: true
+  video_files: true
 
 ### Browser ### Extensions
 
@@ -308,6 +308,8 @@ xfce_default_applications:
 - mimetype: application/x-pcapng
   default_application: org.wireshark.Wireshark.desktop
 - mimetype: application/zip
+  default_application: org.kde.ark.desktop
+- mimetype: application/x-zip-compressed
   default_application: org.kde.ark.desktop
 - mimetype: application/x-7z-compressed
   default_application: org.kde.ark.desktop

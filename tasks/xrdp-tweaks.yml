@@ -21,7 +21,7 @@
     line: 'IdleTimeLimit={{ xrdp_idle_time_limit }}'
     insertafter: '^\[Sessions\]'
     state: present
-    create: no
+    create: false
     backup: yes
   notify:
   - Restart xrdp
@@ -34,7 +34,7 @@
     line: 'KillDisconnected={{ xrdp_kill_disconnected }}'
     insertafter: '^\[Sessions\]'
     state: present
-    create: no
+    create: false
     backup: yes
   notify:
   - Restart xrdp
@@ -47,7 +47,7 @@
     line: 'DisconnectedTimeLimit={{ xrdp_disconnected_time_limit }}'
     insertafter: '^\[Sessions\]'
     state: present
-    create: no
+    create: false
     backup: yes
   notify:
   - Restart xrdp
