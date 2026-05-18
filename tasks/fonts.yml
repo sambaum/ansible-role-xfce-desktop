@@ -1,0 +1,29 @@
+---
+
+- name: Install fontconfig
+  ansible.builtin.apt:
+    name: fontconfig
+    state: present
+
+- name: Ensure Nerd Fonts directory exists
+  ansible.builtin.file:
+    path: /usr/share/fonts/truetype/nerd-fonts
+    state: directory
+    mode: '0755'
+
+- name: Download Nerd Fonts
+  ansible.builtin.get_url:
+    url: "https://github.com/ryanoasis/nerd-fonts/releases/download/v{{ xfce_nerd_fonts_version }}/{{ item }}.zip"
+    dest: "/usr/share/fonts/truetype/nerd-fonts/{{ item }}-{{ xfce_nerd_fonts_version }}.zip"
+    mode: '0644'
+  loop: "{{ xfce_nerd_fonts }}"
+  register: nerd_fonts_download
+
+- name: Extract Nerd Fonts
+  ansible.builtin.unarchive:
+    src: "/usr/share/fonts/truetype/nerd-fonts/{{ item.item }}-{{ xfce_nerd_fonts_version }}.zip"
+    dest: /usr/share/fonts/truetype/nerd-fonts
+    remote_src: yes
+  loop: "{{ nerd_fonts_download.results }}"
+  when: item.changed
+  notify: Update font cache

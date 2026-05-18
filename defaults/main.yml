@@ -23,6 +23,14 @@ xrdp_tcp_keepalive_tuning: false
 # Set to false to revert to the default empty script shipped by xrdp.
 xrdp_reconnectwm_restart_wm: true
 
+### Fonts ###
+
+xfce_nerd_fonts_version: "3.4.0"
+xfce_nerd_fonts:
+- DejaVuSansMono
+- Meslo
+- Hack
+
 ### XFCE ### Font
 
 xfce_font_name: DejaVuSansMono Nerd Font Book 10
