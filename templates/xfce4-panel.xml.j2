@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<channel name="xfce4-panel" version="1.0">
+  <property name="configver" type="int" value="2"/>
+  <property name="panels" type="array">
+    <value type="int" value="1"/>
+    <property name="dark-mode" type="bool" value="true"/>
+    <property name="panel-1" type="empty">
+      <property name="position" type="string" value="p=8;x=840;y=836"/>
+      <property name="size" type="int" value="33"/>
+      <property name="background-alpha" type="int" value="50"/>
+      <property name="background-style" type="int" value="1"/>
+      <property name="background-color" type="array">
+        <value type="int" value="6425"/>
+        <value type="int" value="6425"/>
+        <value type="int" value="6425"/>
+        <value type="int" value="65535"/>
+      </property>
+      <property name="icon-size" type="int" value="0"/>
+      <property name="position-locked" type="bool" value="true"/>
+      <property name="length" type="uint" value="100"/>
+      <property name="plugin-ids" type="array">
+{% for p_item in xfce_panel1_items %}
+        <value type="int" value="{{ p_item.id }}"/>
+{% endfor %}
+      </property>
+    </property>
+  </property>
+  <property name="plugins" type="empty">
+{% for p_item in xfce_panel1_items %}
+    <property name="plugin-{{ p_item.id }}" type="string" value="{{ p_item.name }}">
+{% if p_item.name == 'separator' %}
+      <property name="expand" type="bool" value="{{ p_item.expand | lower }}"/>
+      <property name="style" type="int" value="{{ p_item.style }}"/>
+{% endif %}
+{% if p_item.name == 'tasklist' %}
+      <property name="flat-buttons" type="bool" value="false"/>
+      <property name="show-labels" type="bool" value="true"/>
+      <property name="show-handle" type="bool" value="false"/>
+      <property name="sort-order" type="int" value="0"/>
+{% endif %}
+{% if p_item.name == 'launcher' %}
+      <property name="items" type="array">
+{% for menu_item in p_item.menu_items %}
+        <value type="string" value="{{ menu_item.name }}"/>
+{% endfor %}
+      </property>
+{% endif %}
+{% if p_item.name == 'actions' %}
+      <property name="appearance" type="int" value="0"/>
+      <property name="items" type="array">
+        <value type="string" value="-lock-screen"/>
+        <value type="string" value="-switch-user"/>
+        <value type="string" value="-separator"/>
+        <value type="string" value="-suspend"/>
+        <value type="string" value="-hibernate"/>
+        <value type="string" value="-separator"/>
+        <value type="string" value="-shutdown"/>
+        <value type="string" value="-restart"/>
+        <value type="string" value="-separator"/>
+        <value type="string" value="-logout"/>
+        <value type="string" value="+logout-dialog"/>
+      </property>
+{% endif %}
+{% if p_item.name == 'systray' %}
+      <property name="show-frame" type="bool" value="false"/>
+{% endif %}
+{% if p_item.name == 'systemload' %}
+      <property name="cpu" type="empty">
+        <property name="label" type="string" value=""/>
+        <property name="color" type="array">
+          <value type="double" value="0.207843"/>
+          <value type="double" value="0.517647"/>
+          <value type="double" value="0.894118"/>
+          <value type="double" value="1.000000"/>
+        </property>
+      </property>
+      <property name="memory" type="empty">
+        <property name="label" type="string" value=""/>
+        <property name="color" type="array">
+          <value type="double" value="0.341176"/>
+          <value type="double" value="0.890196"/>
+          <value type="double" value="0.537255"/>
+          <value type="double" value="1.000000"/>
+        </property>
+      </property>
+      <property name="network" type="empty">
+        <property name="label" type="string" value=""/>
+        <property name="enabled" type="bool" value="false"/>
+      </property>
+      <property name="swap" type="empty">
+        <property name="label" type="string" value=""/>
+        <property name="color" type="array">
+          <value type="double" value="0.976471"/>
+          <value type="double" value="0.941176"/>
+          <value type="double" value="0.419608"/>
+          <value type="double" value="1.000000"/>
+        </property>
+      </property>
+      <property name="uptime" type="empty">
+        <property name="enabled" type="bool" value="false"/>
+      </property>
+{% endif %}
+    </property>
+{% endfor %}
+    <property name="clipman" type="empty">
+      <property name="settings" type="empty">
+        <property name="save-on-quit" type="bool" value="false"/>
+      </property>
+    </property>
+  </property>
+</channel>

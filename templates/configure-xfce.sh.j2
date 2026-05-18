@@ -1,0 +1,108 @@
+#!/bin/sh
+# Example for listing properties verbosely:
+# $ xfconf-query -c xfce4-panel -l -v
+# $ xfconf-query -c xfwm4 -lv
+
+# Read with: xfconf-query -c xfwm4 -p /general/use_compositing
+# Default: xfconf-query -c xfwm4 -p /general/use_compositing -s true
+xfconf-query -c xfwm4 -p /general/use_compositing -t bool -s false --create
+
+# Read with: xfconf-query -c xfce4-keyboard-shortcuts -l -v | grep switch_window_key
+# Default: xfconf-query -c xfce4-keyboard-shortcuts -p "/xfwm4/default/<Super>Tab" -s switch_window_key
+xfconf-query -c xfce4-keyboard-shortcuts -p "/xfwm4/default/<Super>Tab" -s false --create
+
+# Disable Screensave/lock
+xfconf-query -c xfce4-screensaver -p /saver/enabled -t bool -s false --create
+xfconf-query -c xfce4-screensaver -p /lock/enabled -t bool -s false --create
+
+# Theme
+xfconf-query -c xfwm4 -p /general/theme -s "{{ xfce_theme }}" -t string --create
+xfconf-query -c xsettings -p /Net/ThemeName -s "{{ xfce_theme }}" -t string --create
+
+### XFCE ### Desktop
+
+# Set Wallpaper on all desktops
+{% for monitor in xfce_monitors %}
+xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor{{ monitor }}/workspace0/last-image -t string -s /usr/share/backgrounds/xfce/{{ xfce_background }} --create
+xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor{{ monitor }}/workspace0/image-style -t int -s 3 --create
+xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorrdp{{ monitor }}/workspace0/last-image -t string -s /usr/share/backgrounds/xfce/{{ xfce_background }} --create
+xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorrdp{{ monitor }}/workspace0/image-style -t int -s 3 --create
+{% endfor %}
+
+# Dont show icons on desktop
+xfconf-query -c xfce4-desktop -p /desktop-icons/file-icons -Rr
+xfconf-query -c xfce4-desktop -p /desktop-icons/file-icons/show-filesystem -t bool -s false --create
+xfconf-query -c xfce4-desktop -p /desktop-icons/file-icons/show-home -t bool -s false --create
+xfconf-query -c xfce4-desktop -p /desktop-icons/file-icons/show-removable -t bool -s false --create
+xfconf-query -c xfce4-desktop -p /desktop-icons/file-icons/show-trash -t bool -s false --create
+
+### XFCE ### Keyboard
+xfconf-query -c keyboard-layout -p /Default/XkbDisable -t bool -s false --create
+xfconf-query -c keyboard-layout -p /Default/XkbLayout -t string -s ch --create
+xfconf-query -c keyboard-layout -p /Default/XkbModel -t string -s pc105 --create
+
+### xfce4-keyboard-shortcuts
+xfconf-query -c xfce4-keyboard-shortcuts -p "/xfwm4/default/<Primary>F1" -s "" # disable so byobu works
+xfconf-query -c xfce4-keyboard-shortcuts -p "/xfwm4/default/<Primary>F2" -s "" # disable so byobu works
+xfconf-query -c xfce4-keyboard-shortcuts -p "/xfwm4/default/<Primary>F3" -s "" # disable so byobu works
+xfconf-query -c xfce4-keyboard-shortcuts -p "/xfwm4/default/<Primary>F4" -s "" # disable so byobu works
+xfconf-query -c xfce4-keyboard-shortcuts -p "/xfwm4/default/<Primary>F5" -s "" # disable so byobu works
+xfconf-query -c xfce4-keyboard-shortcuts -p "/xfwm4/default/<Primary>F6" -s "" # disable so byobu works
+xfconf-query -c xfce4-keyboard-shortcuts -p "/xfwm4/default/<Primary>F7" -s "" # disable so byobu works
+xfconf-query -c xfce4-keyboard-shortcuts -p "/xfwm4/default/<Primary>F8" -s "" # disable so byobu works
+
+### Themes ### Cursor
+xfconf-query -c xsettings -p /Gtk/CursorThemeName -t string -s OpenZone_Black --create
+
+### Themes ### Icons
+xfconf-query -c xsettings -p /Net/IconThemeName -t string -s Paper --create
+
+### Workspace
+xfconf-query -c xfwm4 -p /general/workspace_count -t int -s 4 --create
+
+### Session
+xfconf-query -c xfce4-session -p /general/SaveOnExit -t bool -s false --create
+
+### thinclient_drives
+# sudo /opt/umount_thinclient_drives_{{ item.name }}.sh
+
+### Thunar
+xfconf-query -c thunar -p / -rR
+xfconf-query -c thunar -p /last-show-hidden -t bool -s false --create
+xfconf-query -c thunar -p /last-view -t string -s ThunarDetailsView --create
+xfconf-query -c thunar -p /last-location-bar -t string -s ThunarLocationEntry --create # ThunarLocationEntry or ThunarLocationButtons
+xfconf-query -c thunar -p /misc-date-style -t string -s THUNAR_DATE_STYLE_SHORT --create
+xfconf-query -c thunar -p /last-window-height -t int -s 700 --create
+xfconf-query -c thunar -p /last-window-maximized -t bool -s false --create
+xfconf-query -c thunar -p /last-window-width  -t int -s 1000 --create
+xfconf-query -c thunar -p /default-view -t string -s ThunarDetailsView --create
+xfconf-query -c thunar -p /last-details-view-visible-columns -t string -s THUNAR_COLUMN_DATE_MODIFIED,THUNAR_COLUMN_MIME_TYPE,THUNAR_COLUMN_NAME,THUNAR_COLUMN_SIZE,THUNAR_COLUMN_TYPE --create
+xfconf-query -c thunar -p /last-details-view-column-widths -t string -s 0,186,50,240,474,50,50,60,60 --create
+
+# Numlock
+xfconf-query -c keyboards -p /Default/RestoreNumlock -n -t bool -s false
+
+# No power management for display
+xfconf-query -c xfce4-power-manager -p /xfce4-power-manager/dpms-enabled -t bool -s false --create
+
+# Terminal
+xfconf-query -c xfce4-terminal -p / -rR
+xfconf-query -c xfce4-terminal -p /color-background             -n -t string -s "#002b36"  --create
+xfconf-query -c xfce4-terminal -p /color-background-vary        -n -t bool   -s false  --create
+xfconf-query -c xfce4-terminal -p /color-bold                   -n -t string -s "#93a1a1"  --create
+xfconf-query -c xfce4-terminal -p /color-bold-is-bright         -n -t bool   -s true  --create
+xfconf-query -c xfce4-terminal -p /color-bold-use-default       -n -t bool   -s false  --create
+xfconf-query -c xfce4-terminal -p /color-cursor                 -n -t string -s "#93a1a1"  --create
+xfconf-query -c xfce4-terminal -p /color-cursor-foreground      -n -t string -s "#002b36"  --create
+xfconf-query -c xfce4-terminal -p /color-cursor-use-default     -n -t bool   -s true  --create
+xfconf-query -c xfce4-terminal -p /color-foreground             -n -t string -s "#839496"  --create
+xfconf-query -c xfce4-terminal -p /color-palette                -n -t string -s "rgb(7,54,66);rgb(220,50,47);rgb(133,153,0);rgb(181,137,0);rgb(38,139,210);rgb(211,54,130);rgb(42,161,152);rgb(238,232,213);rgb(94,92,100);rgb(203,75,22);rgb(88,110,117);rgb(101,123,131);rgb(131,148,150);rgb(108,113,196);rgb(147,161,161);rgb(253,246,227)"  --create
+xfconf-query -c xfce4-terminal -p /color-selection              -n -t string -s "#93a1a1"  --create
+xfconf-query -c xfce4-terminal -p /color-selection-background   -n -t string -s "#002b36"  --create
+xfconf-query -c xfce4-terminal -p /color-selection-use-default  -n -t bool   -s true  --create
+xfconf-query -c xfce4-terminal -p /color-use-theme              -n -t bool   -s false  --create
+xfconf-query -c xfce4-terminal -p /font-name                    -n -t string -s "DejaVu Sans Mono for Powerline Book"  --create
+xfconf-query -c xfce4-terminal -p /font-use-system              -n -t bool   -s false  --create
+xfconf-query -c xfce4-terminal -p /misc-default-geometry        -n -t string -s "140x40"  --create
+xfconf-query -c xfce4-terminal -p /scrolling-unlimited          -n -t bool   -s true  --create
+xfconf-query -c xfce4-terminal -p /tab-activity-color           -n -t string -s "#dc322f"  --create

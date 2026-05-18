@@ -120,7 +120,41 @@
   - "{{ xfce_panel1_items }}"
   when: item.1.name == "netload"
 
+### XFCE ### panel XML (deployed as file to avoid xfconf-query array+subproperty limitations)
+
+- name: deploy xfce4-panel.xml
+  ansible.builtin.template:
+    src: xfce4-panel.xml.j2
+    dest: "{{ item.home }}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-panel.xml"
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+  with_items:
+  - "{{ desktop_users }}"
+  tags:
+  - xinitrc
+
 ### XFCE ### xinitrc
+
+- name: deploy configure-xfce.sh
+  ansible.builtin.template:
+    src: configure-xfce.sh.j2
+    dest: "{{ item.home }}/.config/xfce4/configure-xfce.sh"
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+    mode: "0744"
+  with_items:
+  - "{{ desktop_users }}"
+  tags:
+  - xinitrc
+
+- name: apply xfce xfconf settings
+  ansible.builtin.shell: dbus-run-session -- {{ item.home }}/.config/xfce4/configure-xfce.sh
+  become: true
+  become_user: "{{ item.name }}"
+  with_items:
+  - "{{ desktop_users }}"
+  tags:
+  - xinitrc
 
 - name: deploy xinitrc
   ansible.builtin.template:
