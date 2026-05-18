@@ -307,3 +307,23 @@ xfce_default_applications:
   default_application: org.wireshark.Wireshark.desktop
 - mimetype: application/x-pcapng
   default_application: org.wireshark.Wireshark.desktop
+- mimetype: application/zip
+  default_application: org.kde.ark.desktop
+- mimetype: application/x-7z-compressed
+  default_application: org.kde.ark.desktop
+- mimetype: application/x-tar
+  default_application: org.kde.ark.desktop
+- mimetype: application/gzip
+  default_application: org.kde.ark.desktop
+- mimetype: application/x-bzip2
+  default_application: org.kde.ark.desktop
+- mimetype: application/x-xz
+  default_application: org.kde.ark.desktop
+- mimetype: application/x-rar
+  default_application: org.kde.ark.desktop
+- mimetype: application/x-compressed-tar
+  default_application: org.kde.ark.desktop
+- mimetype: application/x-bzip-compressed-tar
+  default_application: org.kde.ark.desktop
+- mimetype: application/x-xz-compressed-tar
+  default_application: org.kde.ark.desktop

@@ -73,6 +73,7 @@ xfce_desktop_package_list:
 - keepassxc
 - kitty
 - code
+- ark
 
 nodejs__npm_packages:
 - prettier
