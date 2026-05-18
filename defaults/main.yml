@@ -49,63 +49,43 @@ xfce_desktop_files_individual: []
 
 xfce_panel1_items:
 - name: whiskermenu
-  type: string
 - name: tasklist
-  type: string
 - name: separator
-  type: string
   style: 0
   expand: "true"
 - name: launcher
-  type: string
   desktop_file: brave-browser.desktop
 - name: launcher
-  type: string
   desktop_file: vscode.desktop
 - name: launcher
-  type: string
   desktop_file: kitty.desktop
 - name: launcher
-  type: string
   desktop_file: file_manager.desktop
 - name: separator
-  type: string
   style: 0
   expand: "false"
 - name: showdesktop
-  type: string
 - name: separator
-  type: string
   style: 0
   expand: "false"
 - name: genmon
-  type: string
 - name: separator
-  type: string
   style: 0
   expand: "false"
 - name: pager
-  type: string
 - name: separator
-  type: string
   style: 0
   expand: "false"
 - name: actions
-  type: string
 - name: separator
-  type: string
   style: 0
   expand: "false"
 - name: systray
-  type: string
 - name: separator
-  type: string
   style: 0
   expand: "false"
 - name: systemload
-  type: string
 - name: netload
-  type: string
 
 xfce_monitors:
 - 0
@@ -144,7 +124,7 @@ thunar_custom_actions:
 - icon: folder-red
   name: Open A Root Thunar Here
   unique_id: 1524057598220529-4
-  command: gksudo thunar %d
+  command: pkexec thunar %d
   description: Open Root Thunar for files
   patterns: "*"
   startup_notify: yes

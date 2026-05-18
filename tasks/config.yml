@@ -15,7 +15,7 @@
     state: directory
     owner: root
     group: root
-  with_items:
+  loop:
   - /etc/chromium/policies/managed/
   - /etc/brave/policies/managed/
 
@@ -25,7 +25,7 @@
     dest: "/etc/{{ item }}/policies/managed/ExtensionInstallForcelist.json"
     owner: root
     group: root
-  with_items:
+  loop:
   - chromium
   - brave
 
@@ -35,7 +35,7 @@
     dest: "/etc/chromium/policies/managed/{{ item.name }}.json"
     owner: root
     group: root
-  with_items: "{{ desktop_ChromeEnterprisePolicies }}"
+  loop: "{{ desktop_ChromeEnterprisePolicies }}"
 
 - name: Brave Policies
   ansible.builtin.template:
@@ -43,7 +43,7 @@
     dest: "/etc/brave/policies/managed/{{ item.name }}.json"
     owner: root
     group: root
-  with_items: "{{ desktop_ChromeEnterprisePolicies }}"
+  loop: "{{ desktop_ChromeEnterprisePolicies }}"
 
 ### XFCE ### Generic xfce directories
 
@@ -53,8 +53,7 @@
     state: directory
     owner: "{{ item.name }}"
     group: "{{ item.name }}"
-  with_items:
-  - "{{ desktop_users }}"
+  loop: "{{ desktop_users }}"
 
 ### XFCE ### Desktop
 
@@ -69,7 +68,7 @@
   ansible.builtin.file:
     path: "{{ item.home }}/.config/xfce4/panel"
     state: absent
-  with_items: "{{ desktop_users }}"
+  loop: "{{ desktop_users }}"
   when: xfce_panel_clean
 
 - name: creating folders for desktop files
@@ -78,9 +77,7 @@
     state: directory
     owner: "{{ item.0.name }}"
     group: "{{ item.0.name }}"
-  with_nested:
-  - "{{ desktop_users }}"
-  - "{{ xfce_panel1_items | selectattr('desktop_file', 'defined') | list }}"
+  loop: "{{ desktop_users | product(xfce_panel1_items | selectattr('desktop_file', 'defined') | list) | list }}"
 
 - name: deploy desktop files
   ansible.builtin.copy:
@@ -88,9 +85,7 @@
     dest: "{{ item.0.home }}/.config/xfce4/panel/launcher-{{ item.1.id }}/{{ item.1.desktop_file }}"
     owner: "{{ item.0.name }}"
     group: "{{ item.0.name }}"
-  with_nested:
-  - "{{ desktop_users }}"
-  - "{{ xfce_panel1_items | selectattr('desktop_file', 'defined') | list }}"
+  loop: "{{ desktop_users | product(xfce_panel1_items | selectattr('desktop_file', 'defined') | list) | list }}"
 
 - name: configure genmon
   ansible.builtin.template:
@@ -98,10 +93,7 @@
     dest: "{{ item.0.home }}/.config/xfce4/panel/genmon-{{ item.1.id }}.rc"
     owner: "{{ item.0.name }}"
     group: "{{ item.0.name }}"
-  with_nested:
-  - "{{ desktop_users }}"
-  - "{{ xfce_panel1_items }}"
-  when: item.1.name == "genmon"
+  loop: "{{ desktop_users | product(xfce_panel1_items | selectattr('name', 'equalto', 'genmon') | list) | list }}"
 
 - name: configure whiskermenu
   ansible.builtin.copy:
@@ -109,10 +101,7 @@
     dest: "{{ item.0.home }}/.config/xfce4/panel/whiskermenu-{{ item.1.id }}.rc"
     owner: "{{ item.0.name }}"
     group: "{{ item.0.name }}"
-  with_nested:
-  - "{{ desktop_users }}"
-  - "{{ xfce_panel1_items }}"
-  when: item.1.name == "whiskermenu"
+  loop: "{{ desktop_users | product(xfce_panel1_items | selectattr('name', 'equalto', 'whiskermenu') | list) | list }}"
 
 - name: configure systemload panel
   ansible.builtin.copy:
@@ -120,10 +109,7 @@
     dest: "{{ item.0.home }}/.config/xfce4/panel/systemload-{{ item.1.id }}.rc"
     owner: "{{ item.0.name }}"
     group: "{{ item.0.name }}"
-  with_nested:
-  - "{{ desktop_users }}"
-  - "{{ xfce_panel1_items }}"
-  when: item.1.name == "systemload"
+  loop: "{{ desktop_users | product(xfce_panel1_items | selectattr('name', 'equalto', 'systemload') | list) | list }}"
 
 - name: configure netload panel
   ansible.builtin.template:
@@ -131,10 +117,7 @@
     dest: "{{ item.0.home }}/.config/xfce4/panel/netload-{{ item.1.id }}.rc"
     owner: "{{ item.0.name }}"
     group: "{{ item.0.name }}"
-  with_nested:
-  - "{{ desktop_users }}"
-  - "{{ xfce_panel1_items }}"
-  when: item.1.name == "netload"
+  loop: "{{ desktop_users | product(xfce_panel1_items | selectattr('name', 'equalto', 'netload') | list) | list }}"
 
 ### XFCE ### panel XML (deployed as file to avoid xfconf-query array+subproperty limitations)
 
@@ -144,8 +127,7 @@
     dest: "{{ item.home }}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-panel.xml"
     owner: "{{ item.name }}"
     group: "{{ item.name }}"
-  with_items:
-  - "{{ desktop_users }}"
+  loop: "{{ desktop_users }}"
   tags:
   - xinitrc
 
@@ -158,8 +140,7 @@
     owner: "{{ item.name }}"
     group: "{{ item.name }}"
     mode: "0744"
-  with_items:
-  - "{{ desktop_users }}"
+  loop: "{{ desktop_users }}"
   tags:
   - xinitrc
 
@@ -168,8 +149,7 @@
   become: true
   become_user: "{{ item.name }}"
   changed_when: false
-  with_items:
-  - "{{ desktop_users }}"
+  loop: "{{ desktop_users }}"
   tags:
   - xinitrc
 
@@ -180,8 +160,7 @@
     owner: "{{ item.name }}"
     group: "{{ item.name }}"
     mode: "0744"
-  with_items:
-  - "{{ desktop_users }}"
+  loop: "{{ desktop_users }}"
   tags:
   - xinitrc
 
@@ -193,8 +172,7 @@
     dest: "{{ item.home }}/.xsession"
     owner: "{{ item.name }}"
     group: "{{ item.name }}"
-  with_items:
-  - "{{ desktop_users }}"
+  loop: "{{ desktop_users }}"
 
 ### Themes ### Cursor
 
@@ -205,8 +183,7 @@
     recurse: yes
     owner: "{{ item.name }}"
     group: "{{ item.name }}"
-  with_items:
-  - "{{ desktop_users }}"
+  loop: "{{ desktop_users }}"
 
 - name: Extract OpenZone_Black.zip
   ansible.builtin.unarchive:
@@ -215,8 +192,7 @@
     creates: "{{ item.home }}/.icons/OpenZone_Black"
     owner: "{{ item.name }}"
     group: "{{ item.name }}"
-  with_items:
-  - "{{ desktop_users }}"
+  loop: "{{ desktop_users }}"
 
 ### Themes ### Icons
 
@@ -224,8 +200,7 @@
   ansible.builtin.copy:
     src: "{{ item.icon }}"
     dest: "/usr/share/pixmaps/{{ item.icon }}"
-  with_items:
-  - "{{ (xfce_panel1_items | selectattr('desktop_file', 'defined') | list) + xfce_desktop_files_individual }}"
+  loop: "{{ (xfce_panel1_items | selectattr('desktop_file', 'defined') | list) + xfce_desktop_files_individual }}"
   when: item.icon is defined
 
 ### Thunar ### Custom Actions
@@ -236,8 +211,7 @@
     state: directory
     owner: "{{ item.name }}"
     group: "{{ item.name }}"
-  with_items:
-  - "{{ desktop_users }}"
+  loop: "{{ desktop_users }}"
 
 - name: configure Thunar custom actions
   ansible.builtin.template:
@@ -245,8 +219,7 @@
     dest: "{{ item.home }}/.config/Thunar/uca.xml"
     owner: "{{ item.name }}"
     group: "{{ item.name }}"
-  with_items:
-  - "{{ desktop_users }}"
+  loop: "{{ desktop_users }}"
   tags:
   - thunar
 
@@ -258,8 +231,7 @@
     dest: "{{ item.home }}/.config/mimeapps.list"
     owner: "{{ item.name }}"
     group: "{{ item.name }}"
-  with_items:
-  - "{{ desktop_users }}"
+  loop: "{{ desktop_users }}"
 
 ### Kitty ### Config
 
@@ -269,8 +241,7 @@
     state: directory
     owner: "{{ item.name }}"
     group: "{{ item.name }}"
-  with_items:
-  - "{{ desktop_users }}"
+  loop: "{{ desktop_users }}"
 
 - name: deploy kitty.conf
   ansible.builtin.copy:
@@ -278,8 +249,7 @@
     dest: "{{ item.home }}/.config/kitty/kitty.conf"
     owner: "{{ item.name }}"
     group: "{{ item.name }}"
-  with_items:
-  - "{{ desktop_users }}"
+  loop: "{{ desktop_users }}"
 
 ### Zellij ### Config
 
@@ -289,15 +259,13 @@
     state: directory
     owner: "{{ item.name }}"
     group: "{{ item.name }}"
-  with_items:
-  - "{{ desktop_users }}"
+  loop: "{{ desktop_users }}"
 
 - name: remove old zellij.kdl (wrong config filename, deployed before 2026-05)
   ansible.builtin.file:
     path: "{{ item.home }}/.config/zellij/zellij.kdl"
     state: absent
-  with_items:
-  - "{{ desktop_users }}"
+  loop: "{{ desktop_users }}"
 
 - name: deploy zellij.conf
   ansible.builtin.copy:
@@ -305,8 +273,7 @@
     dest: "{{ item.home }}/.config/zellij/config.kdl"
     owner: "{{ item.name }}"
     group: "{{ item.name }}"
-  with_items:
-  - "{{ desktop_users }}"
+  loop: "{{ desktop_users }}"
 
 - name: creating directory .config/zellij/layouts
   ansible.builtin.file:
@@ -314,8 +281,7 @@
     state: directory
     owner: "{{ item.name }}"
     group: "{{ item.name }}"
-  with_items:
-  - "{{ desktop_users }}"
+  loop: "{{ desktop_users }}"
 
 - name: deploy zellij default layout
   ansible.builtin.copy:
@@ -328,5 +294,4 @@
       - "zellij-layouts/{{ inventory_hostname }}.kdl"
       - "zellij-layouts/{{ group_names | first }}.kdl"
       - "zellij-layouts/default.kdl"
-  with_items:
-  - "{{ desktop_users }}"
+  loop: "{{ desktop_users }}"
