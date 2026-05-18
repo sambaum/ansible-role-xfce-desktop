@@ -19,6 +19,9 @@ xfconf-query -c xfce4-screensaver -p /lock/enabled -t bool -s false --create
 xfconf-query -c xfwm4 -p /general/theme -s "{{ xfce_theme }}" -t string --create
 xfconf-query -c xsettings -p /Net/ThemeName -s "{{ xfce_theme }}" -t string --create
 
+### Whiskermenu
+xfconf-query -c xfce4-panel -p /plugins/plugin-1/button-icon -t string -s "start-here-xubuntu" --create
+
 ### XFCE ### Desktop
 
 # Set Wallpaper on all desktops
