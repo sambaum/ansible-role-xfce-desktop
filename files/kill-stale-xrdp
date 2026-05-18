@@ -8,11 +8,16 @@
 display_num="$1"
 [ -z "$display_num" ] && exit 0
 
-# Find the xrdp PID currently holding the Xorg display socket.
+# The display socket path is named on the Xorg side of the connection.
+# Get its inode, then find the xrdp process whose peer inode matches.
+display_inode=$(ss -Hxp 2>/dev/null \
+    | awk -v sock="xrdp_display_${display_num}" '$5 ~ sock { print $6; exit }')
+
+[ -z "$display_inode" ] && exit 0
+
 xrdp_pid=$(ss -Hxp 2>/dev/null \
-    | grep -F "/run/xrdp/sockdir/xrdp_display_${display_num}" \
-    | grep -oP 'pid=\K[0-9]+' \
-    | head -1)
+    | awk -v inode="$display_inode" \
+        '$8 == inode { match($NF, /pid=([0-9]+)/, a); if (a[1]) print a[1]; exit }')
 
 [ -z "$xrdp_pid" ] && exit 0
 
