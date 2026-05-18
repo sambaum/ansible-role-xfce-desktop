@@ -20,7 +20,7 @@ xfconf-query -c xfwm4 -p /general/theme -s "{{ xfce_theme }}" -t string --create
 xfconf-query -c xsettings -p /Net/ThemeName -s "{{ xfce_theme }}" -t string --create
 
 ### Whiskermenu
-xfconf-query -c xfce4-panel -p /plugins/plugin-1/button-icon -t string -s "start-here-xubuntu" --create
+xfconf-query -c xfce4-panel -p /plugins/plugin-1/button-icon -t string -s "start-here-ubuntu" --create
 
 ### XFCE ### Desktop
 
@@ -80,29 +80,29 @@ xfconf-query -c thunar -p /last-details-view-visible-columns -t string -s THUNAR
 xfconf-query -c thunar -p /last-details-view-column-widths -t string -s 0,186,50,240,474,50,50,60,60 --create
 
 # Numlock
-xfconf-query -c keyboards -p /Default/RestoreNumlock -n -t bool -s false
+xfconf-query -c keyboards -p /Default/RestoreNumlock -t bool -s false --create
 
 # No power management for display
 xfconf-query -c xfce4-power-manager -p /xfce4-power-manager/dpms-enabled -t bool -s false --create
 
 # Terminal
 xfconf-query -c xfce4-terminal -p / -rR
-xfconf-query -c xfce4-terminal -p /color-background             -n -t string -s "#002b36"  --create
-xfconf-query -c xfce4-terminal -p /color-background-vary        -n -t bool   -s false  --create
-xfconf-query -c xfce4-terminal -p /color-bold                   -n -t string -s "#93a1a1"  --create
-xfconf-query -c xfce4-terminal -p /color-bold-is-bright         -n -t bool   -s true  --create
-xfconf-query -c xfce4-terminal -p /color-bold-use-default       -n -t bool   -s false  --create
-xfconf-query -c xfce4-terminal -p /color-cursor                 -n -t string -s "#93a1a1"  --create
-xfconf-query -c xfce4-terminal -p /color-cursor-foreground      -n -t string -s "#002b36"  --create
-xfconf-query -c xfce4-terminal -p /color-cursor-use-default     -n -t bool   -s true  --create
-xfconf-query -c xfce4-terminal -p /color-foreground             -n -t string -s "#839496"  --create
-xfconf-query -c xfce4-terminal -p /color-palette                -n -t string -s "rgb(7,54,66);rgb(220,50,47);rgb(133,153,0);rgb(181,137,0);rgb(38,139,210);rgb(211,54,130);rgb(42,161,152);rgb(238,232,213);rgb(94,92,100);rgb(203,75,22);rgb(88,110,117);rgb(101,123,131);rgb(131,148,150);rgb(108,113,196);rgb(147,161,161);rgb(253,246,227)"  --create
-xfconf-query -c xfce4-terminal -p /color-selection              -n -t string -s "#93a1a1"  --create
-xfconf-query -c xfce4-terminal -p /color-selection-background   -n -t string -s "#002b36"  --create
-xfconf-query -c xfce4-terminal -p /color-selection-use-default  -n -t bool   -s true  --create
-xfconf-query -c xfce4-terminal -p /color-use-theme              -n -t bool   -s false  --create
-xfconf-query -c xfce4-terminal -p /font-name                    -n -t string -s "{{ xfce_font_name }}"  --create
-xfconf-query -c xfce4-terminal -p /font-use-system              -n -t bool   -s false  --create
-xfconf-query -c xfce4-terminal -p /misc-default-geometry        -n -t string -s "140x40"  --create
-xfconf-query -c xfce4-terminal -p /scrolling-unlimited          -n -t bool   -s true  --create
-xfconf-query -c xfce4-terminal -p /tab-activity-color           -n -t string -s "#dc322f"  --create
+xfconf-query -c xfce4-terminal -p /color-background             -t string -s "#002b36"  --create
+xfconf-query -c xfce4-terminal -p /color-background-vary        -t bool   -s false  --create
+xfconf-query -c xfce4-terminal -p /color-bold                   -t string -s "#93a1a1"  --create
+xfconf-query -c xfce4-terminal -p /color-bold-is-bright         -t bool   -s true  --create
+xfconf-query -c xfce4-terminal -p /color-bold-use-default       -t bool   -s false  --create
+xfconf-query -c xfce4-terminal -p /color-cursor                 -t string -s "#93a1a1"  --create
+xfconf-query -c xfce4-terminal -p /color-cursor-foreground      -t string -s "#002b36"  --create
+xfconf-query -c xfce4-terminal -p /color-cursor-use-default     -t bool   -s true  --create
+xfconf-query -c xfce4-terminal -p /color-foreground             -t string -s "#839496"  --create
+xfconf-query -c xfce4-terminal -p /color-palette                -t string -s "rgb(7,54,66);rgb(220,50,47);rgb(133,153,0);rgb(181,137,0);rgb(38,139,210);rgb(211,54,130);rgb(42,161,152);rgb(238,232,213);rgb(94,92,100);rgb(203,75,22);rgb(88,110,117);rgb(101,123,131);rgb(131,148,150);rgb(108,113,196);rgb(147,161,161);rgb(253,246,227)"  --create
+xfconf-query -c xfce4-terminal -p /color-selection              -t string -s "#93a1a1"  --create
+xfconf-query -c xfce4-terminal -p /color-selection-background   -t string -s "#002b36"  --create
+xfconf-query -c xfce4-terminal -p /color-selection-use-default  -t bool   -s true  --create
+xfconf-query -c xfce4-terminal -p /color-use-theme              -t bool   -s false  --create
+xfconf-query -c xfce4-terminal -p /font-name                    -t string -s "{{ xfce_font_name }}"  --create
+xfconf-query -c xfce4-terminal -p /font-use-system              -t bool   -s false  --create
+xfconf-query -c xfce4-terminal -p /misc-default-geometry        -t string -s "140x40"  --create
+xfconf-query -c xfce4-terminal -p /scrolling-unlimited          -t bool   -s true  --create
+xfconf-query -c xfce4-terminal -p /tab-activity-color           -t string -s "#dc322f"  --create

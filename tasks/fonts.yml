@@ -23,7 +23,7 @@
   ansible.builtin.unarchive:
     src: "/usr/share/fonts/truetype/nerd-fonts/{{ item.item }}-{{ xfce_nerd_fonts_version }}.zip"
     dest: /usr/share/fonts/truetype/nerd-fonts
-    remote_src: yes
+    remote_src: true
   loop: "{{ nerd_fonts_download.results }}"
   when: item.changed
   notify: Update font cache

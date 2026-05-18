@@ -55,5 +55,5 @@
   ansible.builtin.user:
     name: xrdp
     groups: ssl-cert
-    append: yes
+    append: true
   notify: Restart xrdp
