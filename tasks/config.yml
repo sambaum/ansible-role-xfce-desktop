@@ -1,3 +1,12 @@
+- name: auto-assign panel item IDs
+  ansible.builtin.set_fact:
+    xfce_panel1_items: >-
+      {%- set result = [] -%}
+      {%- for item in xfce_panel1_items -%}
+        {%- set _ = result.append(item | combine({'id': loop.index})) -%}
+      {%- endfor -%}
+      {{ result }}
+
 ### Browser
 
 - name: creating directory {{ item }}
@@ -56,6 +65,13 @@
 
 ### XFCE ### Panel
 
+- name: clean panel config directory
+  ansible.builtin.file:
+    path: "{{ item.home }}/.config/xfce4/panel"
+    state: absent
+  with_items: "{{ desktop_users }}"
+  when: xfce_panel_clean
+
 - name: creating folders for desktop files
   ansible.builtin.file:
     path: "{{ item.0.home }}/.config/xfce4/panel/launcher-{{ item.1.id }}/"
@@ -64,17 +80,17 @@
     group: "{{ item.0.name }}"
   with_nested:
   - "{{ desktop_users }}"
-  - "{{ xfce_desktop_files }}"
+  - "{{ xfce_panel1_items | selectattr('desktop_file', 'defined') | list }}"
 
 - name: deploy desktop files
   ansible.builtin.copy:
-    src: "{{ item.1.name }}"
-    dest: "{{ item.0.home }}/.config/xfce4/panel/launcher-{{ item.1.id }}/{{ item.1.name }}"
+    src: "{{ item.1.desktop_file }}"
+    dest: "{{ item.0.home }}/.config/xfce4/panel/launcher-{{ item.1.id }}/{{ item.1.desktop_file }}"
     owner: "{{ item.0.name }}"
     group: "{{ item.0.name }}"
   with_nested:
   - "{{ desktop_users }}"
-  - "{{ xfce_desktop_files }}"
+  - "{{ xfce_panel1_items | selectattr('desktop_file', 'defined') | list }}"
 
 - name: configure genmon
   ansible.builtin.template:
@@ -151,6 +167,7 @@
   ansible.builtin.shell: dbus-run-session -- {{ item.home }}/.config/xfce4/configure-xfce.sh
   become: true
   become_user: "{{ item.name }}"
+  changed_when: false
   with_items:
   - "{{ desktop_users }}"
   tags:
@@ -208,7 +225,7 @@
     src: "{{ item.icon }}"
     dest: "/usr/share/pixmaps/{{ item.icon }}"
   with_items:
-  - "{{ xfce_desktop_files + xfce_desktop_files_individual }}"
+  - "{{ (xfce_panel1_items | selectattr('desktop_file', 'defined') | list) + xfce_desktop_files_individual }}"
   when: item.icon is defined
 
 ### Thunar ### Custom Actions

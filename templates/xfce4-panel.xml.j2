@@ -40,9 +40,7 @@
 {% endif %}
 {% if p_item.name == 'launcher' %}
       <property name="items" type="array">
-{% for menu_item in p_item.menu_items %}
-        <value type="string" value="{{ menu_item.name }}"/>
-{% endfor %}
+        <value type="string" value="{{ p_item.desktop_file }}"/>
       </property>
 {% endif %}
 {% if p_item.name == 'actions' %}
