@@ -1,7 +1,7 @@
 ---
 
-- include_vars: "{{ ansible_distribution }}/{{ ansible_distribution_version }}.yml"
-- include_tasks: "install-{{ ansible_os_family }}.yml"
+- ansible.builtin.include_vars: "{{ ansible_distribution }}/{{ ansible_distribution_version }}.yml"
+- ansible.builtin.include_tasks: "install-{{ ansible_os_family }}.yml"
 - import_tasks: fonts.yml
 - import_tasks: config.yml
 - import_tasks: xrdp-tweaks.yml
