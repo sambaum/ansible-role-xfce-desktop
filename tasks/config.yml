@@ -180,7 +180,7 @@
   ansible.builtin.file:
     path: "{{ item.home }}/.icons/"
     state: directory
-    recurse: yes
+    recurse: true
     owner: "{{ item.name }}"
     group: "{{ item.name }}"
   loop: "{{ desktop_users }}"

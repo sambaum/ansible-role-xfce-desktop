@@ -129,7 +129,7 @@
 - name: Deploy /etc/xrdp/startwm.sh (reconnect-safe version)
   ansible.builtin.copy:
     # src: files/startwm.sh
-    src: files/startwm-default.sh
+    src: startwm-default.sh
     dest: /etc/xrdp/startwm.sh
     owner: root
     group: root
