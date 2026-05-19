@@ -13,15 +13,20 @@
     cmd: gpg --dearmor < /etc/apt/keyrings/microsoft.asc > /etc/apt/keyrings/microsoft.gpg
     creates: /etc/apt/keyrings/microsoft.gpg
 
+- name: Configure APT repositories
+  ansible.builtin.include_role:
+    name: debops.debops.apt
+  vars:
+    apt__packages: []
+
 - name: Update APT cache
   ansible.builtin.apt:
     update_cache: true
 
-- name: Configure APT
-  ansible.builtin.include_role:
-    name: debops.debops.apt
-  vars:
-    apt__cache_valid_time: 0
+- name: Install packages
+  ansible.builtin.apt:
+    name: "{{ apt__packages }}"
+    state: present
 
 - name: Install XFCE Packages
   ansible.builtin.include_role:
