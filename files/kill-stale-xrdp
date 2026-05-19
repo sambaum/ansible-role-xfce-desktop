@@ -27,6 +27,13 @@ case "$(ps -p "$xrdp_pid" -o args= 2>/dev/null)" in
     *) exit 0 ;;
 esac
 
+# Safety check: if the process is less than 30 seconds old it is the current
+# session's xrdp (which may have a briefly non-zero Send-Q during the initial
+# display burst). Only a stale process from a sleeping client will be older.
+elapsed=$(ps -p "$xrdp_pid" -o etimes= 2>/dev/null | tr -d ' ')
+[ -z "$elapsed" ] && exit 0
+[ "$elapsed" -lt 30 ] && exit 0
+
 # Check the TCP Send-Q for this process. A non-zero Send-Q means data is
 # queued but the client is not ACKing it — the session is stale.
 send_q=$(ss -Htnp 2>/dev/null \
