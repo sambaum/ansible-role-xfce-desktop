@@ -1,7 +1,16 @@
 ---
 
-- ansible.builtin.include_vars: "{{ ansible_distribution }}/{{ ansible_distribution_version }}.yml"
-- ansible.builtin.include_tasks: "install-{{ ansible_os_family }}.yml"
-- import_tasks: fonts.yml
-- import_tasks: config.yml
-- import_tasks: xrdp-tweaks.yml
+- name: Load distribution-specific variables
+  ansible.builtin.include_vars: "{{ ansible_distribution }}/{{ ansible_distribution_version }}.yml"
+
+- name: Install packages ({{ ansible_os_family }})
+  ansible.builtin.include_tasks: "install-{{ ansible_os_family }}.yml"
+
+- name: Install fonts
+  ansible.builtin.import_tasks: fonts.yml
+
+- name: Apply XFCE configuration
+  ansible.builtin.import_tasks: config.yml
+
+- name: Apply xrdp tweaks
+  ansible.builtin.import_tasks: xrdp-tweaks.yml
