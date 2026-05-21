@@ -251,6 +251,19 @@
     group: "{{ item.name }}"
   loop: "{{ desktop_users }}"
 
+- name: deploy kitty.desktop to system applications
+  ansible.builtin.copy:
+    src: kitty.desktop
+    dest: /usr/share/applications/kitty.desktop
+
+- name: deploy kitty custom window icon
+  ansible.builtin.copy:
+    src: kitty.app-128.png
+    dest: "{{ item.home }}/.config/kitty/kitty.app-128.png"
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+  loop: "{{ desktop_users }}"
+
 ### Zellij ### Config
 
 - name: creating directory .config/zellij
