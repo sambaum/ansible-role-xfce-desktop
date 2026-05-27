@@ -13,14 +13,24 @@ layout {
             args "-c" "sudo su - -c 'cd /etc/ansible && exec zsh'"
         }
     }
-    tab name="k8s" {
+    tab name="dumpster" {
         pane command="ssh" {
             args "dumpster.int.sambaum.ch"
         }
     }
-    tab name="k8s-root" {
+    tab name="dumpster-root" {
         pane command="ssh" {
             args "-t" "dumpster.int.sambaum.ch" "sudo su - root"
+        }
+    }
+    tab name="deskcube" {
+        pane command="ssh" {
+            args "deskcube.int.sambaum.ch"
+        }
+    }
+    tab name="deskcube-root" {
+        pane command="ssh" {
+            args "-t" "deskcube.int.sambaum.ch" "sudo su - root"
         }
     }
     tab name="extra" {
