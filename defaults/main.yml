@@ -289,6 +289,8 @@ xfce_default_applications:
   default_application: code.desktop
 - mimetype: text/x-dockerfile
   default_application: code.desktop
+- mimetype: text/csv
+  default_application: code.desktop
 - mimetype: application/pdf
   default_application: qpdfview.desktop
 - mimetype: image/jpeg
