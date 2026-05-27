@@ -19,7 +19,7 @@
   loop: "{{ xfce_nerd_fonts }}"
   register: nerd_fonts_download
 
-- name: Extract Nerd Fonts
+- name: Extract Nerd Fonts # noqa: no-handler
   ansible.builtin.unarchive:
     src: "/usr/share/fonts/truetype/nerd-fonts/{{ item.item }}-{{ xfce_nerd_fonts_version }}.zip"
     dest: /usr/share/fonts/truetype/nerd-fonts

@@ -1,4 +1,4 @@
-- name: auto-assign panel item IDs
+- name: Auto-assign panel item IDs
   ansible.builtin.set_fact:
     xfce_panel_items: >-
       {%- set result = [] -%}
@@ -9,7 +9,7 @@
 
 ### Browser
 
-- name: creating directory {{ item }}
+- name: Create directory {{ item }}
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
@@ -47,7 +47,7 @@
 
 ### XFCE ### Generic xfce directories
 
-- name: creating directory /.config/xfce4/xfconf/xfce-perchannel-xml
+- name: Create directory /.config/xfce4/xfconf/xfce-perchannel-xml
   ansible.builtin.file:
     path: "{{ item.home }}/.config/xfce4/xfconf/xfce-perchannel-xml"
     state: directory
@@ -57,21 +57,21 @@
 
 ### XFCE ### Desktop
 
-- name: copy desktop background
+- name: Copy desktop background
   ansible.builtin.copy:
     src: "wallpapers/{{ xfce_background }}"
     dest: "/usr/share/backgrounds/xfce/{{ xfce_background }}"
 
 ### XFCE ### Panel
 
-- name: clean panel config directory
+- name: Clean panel config directory
   ansible.builtin.file:
     path: "{{ item.home }}/.config/xfce4/panel"
     state: absent
   loop: "{{ desktop_users }}"
   when: xfce_panel_clean
 
-- name: creating folders for desktop files
+- name: Create folders for desktop files
   ansible.builtin.file:
     path: "{{ item.0.home }}/.config/xfce4/panel/launcher-{{ item.1.id }}/"
     state: directory
@@ -79,7 +79,7 @@
     group: "{{ item.0.name }}"
   loop: "{{ desktop_users | product(xfce_panel_items | selectattr('desktop_file', 'defined') | list) | list }}"
 
-- name: deploy desktop files
+- name: Deploy desktop files
   ansible.builtin.copy:
     src: "{{ item.1.desktop_file }}"
     dest: "{{ item.0.home }}/.config/xfce4/panel/launcher-{{ item.1.id }}/{{ item.1.desktop_file }}"
@@ -87,7 +87,7 @@
     group: "{{ item.0.name }}"
   loop: "{{ desktop_users | product(xfce_panel_items | selectattr('desktop_file', 'defined') | list) | list }}"
 
-- name: configure genmon
+- name: Configure genmon
   ansible.builtin.template:
     src: genmon.rc.j2
     dest: "{{ item.0.home }}/.config/xfce4/panel/genmon-{{ item.1.id }}.rc"
@@ -95,7 +95,7 @@
     group: "{{ item.0.name }}"
   loop: "{{ desktop_users | product(xfce_panel_items | selectattr('name', 'equalto', 'genmon') | list) | list }}"
 
-- name: configure whiskermenu
+- name: Configure whiskermenu
   ansible.builtin.copy:
     src: whiskermenu.rc
     dest: "{{ item.0.home }}/.config/xfce4/panel/whiskermenu-{{ item.1.id }}.rc"
@@ -103,7 +103,7 @@
     group: "{{ item.0.name }}"
   loop: "{{ desktop_users | product(xfce_panel_items | selectattr('name', 'equalto', 'whiskermenu') | list) | list }}"
 
-- name: configure systemload panel
+- name: Configure systemload panel
   ansible.builtin.copy:
     src: systemload.rc
     dest: "{{ item.0.home }}/.config/xfce4/panel/systemload-{{ item.1.id }}.rc"
@@ -111,7 +111,7 @@
     group: "{{ item.0.name }}"
   loop: "{{ desktop_users | product(xfce_panel_items | selectattr('name', 'equalto', 'systemload') | list) | list }}"
 
-- name: configure netload panel
+- name: Configure netload panel
   ansible.builtin.template:
     src: netload.rc.j2
     dest: "{{ item.0.home }}/.config/xfce4/panel/netload-{{ item.1.id }}.rc"
@@ -121,7 +121,7 @@
 
 ### XFCE ### panel XML (deployed as file to avoid xfconf-query array+subproperty limitations)
 
-- name: deploy xfce4-panel.xml
+- name: Deploy xfce4-panel.xml
   ansible.builtin.template:
     src: xfce4-panel.xml.j2
     dest: "{{ item.home }}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-panel.xml"
@@ -133,7 +133,7 @@
 
 ### XFCE ### xinitrc
 
-- name: deploy configure-xfce.sh
+- name: Deploy configure-xfce.sh
   ansible.builtin.template:
     src: configure-xfce.sh.j2
     dest: "{{ item.home }}/.config/xfce4/configure-xfce.sh"
@@ -144,8 +144,8 @@
   tags:
   - xinitrc
 
-- name: apply xfce xfconf settings
-  ansible.builtin.shell: dbus-run-session -- {{ item.home }}/.config/xfce4/configure-xfce.sh
+- name: Apply xfce xfconf settings
+  ansible.builtin.command: dbus-run-session -- {{ item.home }}/.config/xfce4/configure-xfce.sh
   become: true
   become_user: "{{ item.name }}"
   changed_when: false
@@ -153,7 +153,7 @@
   tags:
   - xinitrc
 
-- name: deploy xinitrc
+- name: Deploy xinitrc
   ansible.builtin.template:
     src: xinitrc.j2
     dest: "{{ item.home }}/.config/xfce4/xinitrc"
@@ -166,7 +166,7 @@
 
 ### XFCE ### xfce xsession (for XRDP)
 
-- name: xsession
+- name: Deploy xsession
   ansible.builtin.copy:
     src: xsession
     dest: "{{ item.home }}/.xsession"
@@ -176,7 +176,7 @@
 
 ### Themes ### Cursor
 
-- name: creating directory "~/.icons/"
+- name: Create directory ~/.icons/
   ansible.builtin.file:
     path: "{{ item.home }}/.icons/"
     state: directory
@@ -196,7 +196,7 @@
 
 ### Themes ### Icons
 
-- name: copy icons for panel
+- name: Copy icons for panel
   ansible.builtin.copy:
     src: "{{ item.icon }}"
     dest: "/usr/share/pixmaps/{{ item.icon }}"
@@ -205,7 +205,7 @@
 
 ### Thunar ### Custom Actions
 
-- name: creating directory .config/Thunar
+- name: Create directory .config/Thunar
   ansible.builtin.file:
     path: "{{ item.home }}/.config/Thunar"
     state: directory
@@ -213,7 +213,7 @@
     group: "{{ item.name }}"
   loop: "{{ desktop_users }}"
 
-- name: configure Thunar custom actions
+- name: Configure Thunar custom actions
   ansible.builtin.template:
     src: uca.xml.j2
     dest: "{{ item.home }}/.config/Thunar/uca.xml"
@@ -235,7 +235,7 @@
 
 ### Kitty ### Config
 
-- name: creating directory .config/kitty
+- name: Create directory .config/kitty
   ansible.builtin.file:
     path: "{{ item.home }}/.config/kitty"
     state: directory
@@ -243,7 +243,7 @@
     group: "{{ item.name }}"
   loop: "{{ desktop_users }}"
 
-- name: deploy kitty.conf
+- name: Deploy kitty.conf
   ansible.builtin.copy:
     src: kitty.conf
     dest: "{{ item.home }}/.config/kitty/kitty.conf"
@@ -251,12 +251,12 @@
     group: "{{ item.name }}"
   loop: "{{ desktop_users }}"
 
-- name: deploy kitty.desktop to system applications
+- name: Deploy kitty.desktop to system applications
   ansible.builtin.copy:
     src: kitty.desktop
     dest: /usr/share/applications/kitty.desktop
 
-- name: deploy kitty custom window icon
+- name: Deploy kitty custom window icon
   ansible.builtin.copy:
     src: kitty.app-128.png
     dest: "{{ item.home }}/.config/kitty/kitty.app-128.png"
@@ -266,7 +266,7 @@
 
 ### Zellij ### Config
 
-- name: creating directory .config/zellij
+- name: Create directory .config/zellij
   ansible.builtin.file:
     path: "{{ item.home }}/.config/zellij"
     state: directory
@@ -274,13 +274,13 @@
     group: "{{ item.name }}"
   loop: "{{ desktop_users }}"
 
-- name: remove old zellij.kdl (wrong config filename, deployed before 2026-05)
+- name: Remove old zellij.kdl (wrong config filename, deployed before 2026-05)
   ansible.builtin.file:
     path: "{{ item.home }}/.config/zellij/zellij.kdl"
     state: absent
   loop: "{{ desktop_users }}"
 
-- name: deploy zellij.conf
+- name: Deploy zellij.conf
   ansible.builtin.copy:
     src: zellij-config.kdl
     dest: "{{ item.home }}/.config/zellij/config.kdl"
@@ -288,7 +288,7 @@
     group: "{{ item.name }}"
   loop: "{{ desktop_users }}"
 
-- name: creating directory .config/zellij/layouts
+- name: Create directory .config/zellij/layouts
   ansible.builtin.file:
     path: "{{ item.home }}/.config/zellij/layouts"
     state: directory
@@ -296,7 +296,7 @@
     group: "{{ item.name }}"
   loop: "{{ desktop_users }}"
 
-- name: deploy zellij default layout
+- name: Deploy zellij default layout
   ansible.builtin.copy:
     src: "{{ lookup('first_found', zellij_layout_candidates) }}"
     dest: "{{ item.home }}/.config/zellij/layouts/default.kdl"
