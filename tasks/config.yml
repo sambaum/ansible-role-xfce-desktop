@@ -308,3 +308,33 @@
       - "zellij-layouts/{{ group_names | first }}.kdl"
       - "zellij-layouts/default.kdl"
   loop: "{{ desktop_users }}"
+
+### VSCodium ### Config
+
+- name: Create directory .config/VSCodium/User
+  ansible.builtin.file:
+    path: "{{ item.home }}/.config/VSCodium/User"
+    state: directory
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+  loop: "{{ desktop_users | selectattr('vscodium', 'defined') | selectattr('vscodium') | list }}"
+
+- name: Deploy syncing.json
+  ansible.builtin.copy:
+    src: syncing.json
+    dest: "{{ item.home }}/.config/VSCodium/User/syncing.json"
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+    mode: "0600"
+  loop: "{{ desktop_users | selectattr('vscodium', 'defined') | selectattr('vscodium') | list }}"
+
+### VSCodium ### Extensions
+
+- name: Install VSCodium extensions
+  ansible.builtin.command:
+    cmd: codium --install-extension {{ item.1 }}
+  become: true
+  become_user: "{{ item.0.name }}"
+  loop: "{{ desktop_users | selectattr('vscodium', 'defined') | selectattr('vscodium') | list | product(vscodium_extensions) | list }}"
+  when: vscodium_extensions | length > 0
+  changed_when: false

@@ -5,6 +5,7 @@
 desktop_users:
 - name: sam
   home: /home/sam
+  vscodium: true
 - name: root
   home: /root
 
@@ -47,6 +48,13 @@ xfce_theme: Greybird
 
 xfce_panel_extra_items: []
 
+### VSCodium ### Extensions
+
+vscodium_extensions_all:
+- nonoroazoro.syncing
+vscodium_extensions_group: []
+vscodium_extensions_host: []
+
 xfce_panel_items:
 - name: whiskermenu
 - name: tasklist
@@ -57,6 +65,8 @@ xfce_panel_items:
   desktop_file: brave-browser.desktop
 - name: launcher
   desktop_file: vscode.desktop
+- name: launcher
+  desktop_file: codium.desktop
 - name: launcher
   desktop_file: kitty.desktop
 - name: launcher

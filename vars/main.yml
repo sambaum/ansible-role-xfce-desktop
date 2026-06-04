@@ -2,3 +2,6 @@
 
 chromium_force_extensions: >-
   {{ chromium_force_extensions_all | union(chromium_force_extensions_group) | union(chromium_force_extensions_host) | unique }}
+
+vscodium_extensions: >-
+  {{ vscodium_extensions_all | union(vscodium_extensions_group) | union(vscodium_extensions_host) | unique }}

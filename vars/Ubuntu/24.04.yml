@@ -11,6 +11,12 @@ apt__repositories:
   signed_by: /etc/apt/keyrings/microsoft.gpg
   suites: 'stable'
   components: "main"
+- name: vscodium
+  filename: vscodium.sources
+  uris: https://download.vscodium.com/debs
+  signed_by: /usr/share/keyrings/vscodium-archive-keyring.gpg
+  suites: vscodium
+  components: "main"
 
 xfce_desktop_package_list_xfce:
 - xfce4
@@ -73,6 +79,7 @@ xfce_desktop_package_list:
 - keepassxc
 - kitty
 - code
+- codium
 - ark
 
 nodejs__npm_packages:

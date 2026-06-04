@@ -13,6 +13,17 @@
     cmd: gpg --dearmor < /etc/apt/keyrings/microsoft.asc > /etc/apt/keyrings/microsoft.gpg
     creates: /etc/apt/keyrings/microsoft.gpg
 
+- name: Download VSCodium APT signing key
+  ansible.builtin.get_url:
+    url: https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg
+    dest: /etc/apt/keyrings/vscodium.asc
+    mode: '0644'
+
+- name: Dearmor VSCodium APT signing key
+  ansible.builtin.shell:
+    cmd: gpg --dearmor < /etc/apt/keyrings/vscodium.asc > /usr/share/keyrings/vscodium-archive-keyring.gpg
+    creates: /usr/share/keyrings/vscodium-archive-keyring.gpg
+
 - name: Configure APT repositories
   ansible.builtin.include_role:
     name: debops.debops.apt
