@@ -251,6 +251,11 @@
     group: "{{ item.name }}"
   loop: "{{ desktop_users }}"
 
+- name: Deploy kitty launcher icon
+  ansible.builtin.copy:
+    src: kitty-bash-icon.svg
+    dest: /usr/share/pixmaps/kitty-bash-icon.svg
+
 - name: Deploy kitty.desktop to system applications
   ansible.builtin.copy:
     src: kitty.desktop
