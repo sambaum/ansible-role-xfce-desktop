@@ -1,0 +1,33 @@
+layout {
+    default_tab_template {
+        pane size=1 borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        children
+        pane size=2 borderless=true {
+            plugin location="zellij:status-bar"
+        }
+    }
+
+    tab name="Ansible/root" {
+        pane command="bash" {
+            args "-c" "sudo su - -c 'cd /etc/ansible && exec zsh'"
+        }
+    }
+    tab name="sam" {
+        pane
+    }
+    tab name="extra" {
+        pane
+    }
+    tab name="192.168.159.10 proxy/idm/auth" {
+        pane command="ssh" {
+            args "-l" "root" "-t" "192.168.159.10" 
+        }
+    }
+    tab name="192.168.159.11 nevisadmin4" {
+        pane command="ssh" {
+            args "-l" "root" "-t" "192.168.159.11" 
+        }
+    }
+}
